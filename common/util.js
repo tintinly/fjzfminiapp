@@ -38,27 +38,14 @@ var dateUtils = {
 		'分钟': 60000,
 		'秒': 1000
 	},
-	humanize: function(milliseconds) {
-		var humanize = '';
-		for (var key in this.UNITS) {
-			if (milliseconds >= this.UNITS[key]) {
-				humanize = Math.floor(milliseconds / this.UNITS[key]) + key + '前';
-				break;
-			}
-		}
-		return humanize || '刚刚';
-	},
-	format: function(dateStr) {
-		var date = this.parse(dateStr)
-		var diff = Date.now() - date.getTime();
-		if (diff < this.UNITS['天']) {
-			return this.humanize(diff);
-		}
-		var _format = function(number) {
-			return (number < 10 ? ('0' + number) : number);
-		};
-		return date.getFullYear() + '/' + _format(date.getMonth() + 1) + '/' + _format(date.getDate()) + '-' +
-			_format(date.getHours()) + ':' + _format(date.getMinutes());
+	dateToStr : function(date) {
+		var year = date.getFullYear(); // 年
+		var month = date.getMonth() + 1; // 月
+		var day = date.getDate(); // 日
+		// 添加前导零
+		month = month < 10 ? '0' + month : month;
+		day = day < 10 ? '0' + day : day;
+		return year + '-' + month + '-' + day;
 	},
 	parse: function(str) { //将"yyyy-mm-dd HH:MM:ss"格式的字符串，转化为一个Date对象
 		var a = str.split(/[^0-9]/);
@@ -70,17 +57,17 @@ var dateUtils = {
 function IsLogon(){
 	var phoneNumber = wx.getStorageSync('phoneNumber');
 	var openId = wx.getStorageSync('openId');
-	var clientList = wx.getStorageSync('clientList');
+	var userInfo = wx.getStorageSync('userInfo');
 	console.log("phoneNumber",phoneNumber);
 	console.log("openId",openId);
-	console.log("clientList",clientList);
+	console.log("userInfo",userInfo);
 	// 获取缓存的登录信息
-	if (phoneNumber && openId && clientList && clientList.clientId) {
+	if (phoneNumber && openId && userInfo && userInfo.clientId) {
 		console.log("用户已登陆");
 		getApp().globalData.UserLogin = true;
 		getApp().globalData.openId = openId;
 		getApp().globalData.phoneNumber = phoneNumber;
-		getApp().globalData.clientList = clientList
+		getApp().globalData.userInfo = userInfo
 	}else{
 		getApp().globalData.UserLogin = false
 	}

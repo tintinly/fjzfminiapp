@@ -38,7 +38,7 @@
 			<!-- <view class="bg-white margin-top margin-lr radius"  >
 				<view class="padding-lr">
 					<view class="solid-bottom padding-tb"  >
-						<view class=""><text class="cuIcon-form  text-qhjc-blue"></text>发票信息</view>
+						<view class=""><text class="cuIcon-form  text-sunway-blue"></text>发票信息</view>
 					</view>
 					<view class="flex dashed-bottom padding-tb-sm"  >
 						<view class="flex-sub "><view class="fl">发票号</view></view>
@@ -66,7 +66,7 @@
 			<view class="bg-white margin-top margin-lr radius"  >
 				<view class="padding-lr">
 					<view class="solid-bottom padding-tb"  >
-						<view class=""><text class="cuIcon-form  text-qhjc-blue"></text> <text class="text-bold">发票信息</text></view>
+						<view class=""><text class="cuIcon-form  text-sunway-blue"></text> <text class="text-bold">发票信息</text></view>
 					</view>
 					<view class="flex dashed-bottom padding-tb-sm"  >
 						<view class="flex-sub "><view class="text-grey fl">发票号</view></view>
@@ -95,7 +95,7 @@
 			<!-- 底部按钮栏 -->
 			<view class="margin-top" :style="'height:' + (unSafeButtomHeight + btnHeight * 1 + btnMargin * 2 * 1) + 'px;'  "></view>
 			<view class="btn-group-bottom" :style="'height:' + (unSafeButtomHeight + btnHeight * 1 + btnMargin * 2 * 1) + 'px;'  ">
-				<button  class="button bg-qhjc-blue" :style="'line-height:' + btnHeight + 'px; margin : ' + btnMargin + 'px ;' " @click="viewInvoicePic(invoice.ext$.invoicepic)">查看发票</button>
+				<button  class="button bg-sunway-blue" :style="'line-height:' + btnHeight + 'px; margin : ' + btnMargin + 'px ;' " @click="viewInvoicePic(invoice.ext$.invoicepic)">查看发票</button>
 			</view>
 		</view>
 	</view>
@@ -143,7 +143,7 @@
 					title: '查询中...',
 				})
 				uni.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-invoice-detail',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-invoice-detail',
 					data : {
 						invoiceId : invoiceId,
 					},

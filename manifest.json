@@ -1,13 +1,13 @@
 {
     "mp-weixin" : {
-        "appid" : "wx239100a18d156ddc",
+        "appid" : "wxa6b4df1015ec63f9",
         "setting" : {
             "postcss" : true,
             "minified" : true
         },
-		"lazyCodeLoading": "requiredComponents"
+        "lazyCodeLoading" : "requiredComponents"
     },
     "appid" : "__UNI__AC8C90C",
-    "name" : "秋毫质检小程序",
-    "versionName" : "秋毫质检小程序"
+    "name" : "中孚检测小程序",
+    "versionName" : "中孚检测小程序"
 }

@@ -1,10 +1,10 @@
 <template>
 	<view>
-		<view  class="bg-img" v-if="noData"><image mode="widthFix" src="../../static/image/noData.png"></image></view>
+		<sunway-empty-data v-if="noData" imgSrc="/static/image/cue/empty.svg"></sunway-empty-data>
 		<view class="margin bg-white box-radius" v-for="item in projectList"  @tap="toPage('../projectdetail/projectdetail?projId=' + item.projId)">
 			<view class="flex flex-wrap padding-xs  solid-bottom align-center radius">
 				<view class="text-cut" style="flex-basis: 70% ">
-					<text class="cuIcon-form text-sm text-qhjc-blue margin-right-xs"></text><text class="text-bold">{{item.projName}}</text>
+					<text class="cuIcon-form text-sm text-sunway-blue margin-right-xs"></text><text class="text-bold">{{item.projName}}</text>
 				</view>
 				<view style="flex-basis: 30%">
 					<view class=" fr title-text-right-text padding-lr padding-xs">{{item.projNode}}</view>
@@ -37,7 +37,7 @@
 				title : '查询中'
 			})
 			wx.request({
-				url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-contract',
+				url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-contract',
 				data : {
 					clientNo : options.clientNo
 				},
@@ -100,7 +100,7 @@
 			},
 			viewReport : function(e){
 				wx.request({
-					url:  getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-report',
+					url:  getApp().globalData.host + '/open/emc/module/bp/wechat/select-report',
 					data : {
 						projectId : e
 					},

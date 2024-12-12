@@ -1,11 +1,5 @@
 <template>
 	<view >
-		<view style="padding: 5px 12px;">
-			<uni-card :is-shadow="true" is-full>
-				<text class="uni-h6">请输入或拍照上传委托内容</text>
-			</uni-card>
-		</view>
-		
 		<view class="content-box ">
 			<view class="content-row solid-bottom">
 				<view class="title-bar bg-white  ">
@@ -42,15 +36,15 @@
 					</view>
 				</view>
 					
-				<view class="content-bar ">
-					<uni-easyinput type="textarea" auto-height="true"  maxlength=200 v-model="entrustContent" @input="spyInput($event)" placeholder="请输入委托内容(200字以内)"></uni-easyinput>
+				<view class="content">
+					<textarea name="opinion" @input="spyInput" maxlength="200" :value="entrustContent" placeholder-class="placeholder" placeholder="请描述检测委托内容(受检单位信息,检测点位,检测项目等)" />
 				</view>
 			</view>
 			
 		</view>
 		
 		
-		<button class="button bg-qhjc-blue" @click="submit"><text class="text-white">提交</text></button>
+		<button class="button bt-sunway-blue" @click="submit"><text class="text-white">提交</text></button>
 		
 	</view>
 
@@ -72,12 +66,13 @@
 			this.loadData();
 		},
 		methods: {
-			loadData : function(e)	 {
-				
-			},
 			spyInput:function(e){
 				console.log(e)
-			   this.wordCount = e.length
+			   this.wordCount = e.detail.cursor
+			   this.entrustContent = e.detail.value
+			},
+			loadData : function(e)	 {
+				
 			},
 			ChooseImage() {
 				uni.chooseImage({
@@ -115,12 +110,12 @@
 								title: '上传中'
 							})
 							uni.request({
-								url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/submit-entrust',
+								url: getApp().globalData.host + '/open/emc/module/bp/wechat/submit-entrust',
 								data : {
 									entrustContent : this.entrustContent,
 									openId : getApp().globalData.openId,
-									clientId : getApp().globalData.clientList.clientId,
-									clientContactId : getApp().globalData.clientList.clientContactId
+									clientId : getApp().globalData.userInfo.clientId,
+									clientContactId : getApp().globalData.userInfo.clientContactId
 								},
 								method : 'POST',
 								success : (enTrustId) =>{
@@ -145,7 +140,7 @@
 											for (var i = 0; i < this.imgList.length; i++) {
 												var fileIndex = i;
 												uni.uploadFile({
-													url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/upload-file',
+													url: getApp().globalData.host + '/open/emc/module/bp/wechat/upload-file',
 													filePath: this.imgList[i],
 													name:  'file', 
 													formData: {
@@ -230,69 +225,6 @@
 	}
 </script>
 
-<style lang="scss">
-
-	
-	.example-body {
-		padding: 10px;
-		padding-top: 0;
-	}
-
-	.custom-image-box {
-		/* #ifndef APP-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.text {
-		font-size: 14px;
-		color: #333;
-	}
-	
-
-	
-	.button{
-		border-radius: 80rpx;
-		margin: 40rpx 50rpx;
-		font-size: 35rpx;
-		background-color: cornflowerblue;
-	}
-		
-	.content-box {
-		margin: 15rpx 27rpx;
-		border-radius: 16rpx;
-		background-color: #ffffff;
-		box-shadow: 10px 10px 5px rgba(39, 48, 57, 0.05);
-	}
-	
-	.content-row {
-		// padding : 15rpx 27rpx;
-		background-color: #ffffff;
-		// border-style: solid;
-		// border-width: 2px;
-		border-radius: 16rpx;
-		padding: 5px;
-	}
-		
-	.title-bar {
-		display: flex;
-		position: relative;
-		align-items: center;
-		border-radius: 16rpx;
-		min-height: 70upx;
-		justify-content: space-between;
-	}
-	
-	.content-bar {
-		background-color: #ffffff;
-		padding: 1upx 30upx;
-		display: flex;
-		align-items: center;
-		min-height: 100rpx;
-		border-radius: 16rpx;
-		justify-content: space-between;
-}
+<style >
+	@import url(../entrust/entrust.css);
 </style>

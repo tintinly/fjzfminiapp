@@ -1,7 +1,6 @@
 <template>
 	<view>
-		<view  class="bg-img" v-if="noData"><image mode="widthFix" src="../../static/image/noData.png"></image></view>
-		
+		<sunway-empty-data v-if="noData" imgSrc="/static/image/cue/empty.svg"></sunway-empty-data>
 <!-- 		<view class="bg-white margin-top margin-lr radius ">
 			<view class="flex padding align-center" >
 				<view class="flex-treble">
@@ -47,7 +46,7 @@
 				title : '查询中'
 			})
 			wx.request({
-				url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-invoice',
+				url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-invoice',
 				data : {
 					clientNo : options.clientNo
 				},
@@ -109,15 +108,5 @@
 </script>
 
 <style>
-	.bg-img {
-		position: absolute;
-		width: 150px;
-		top: 50%;
-			left:50%;
-			transform: translate(-50%,-50%);
-	}
-	
-	.radius {
-		border-radius: 16rpx;
-	}
+	@import url(../selectinvoice/selectinvoice.css);
 </style>

@@ -1,21 +1,60 @@
-.header {/*样式文件配置 */
-    margin: 90rpx 0 90rpx 50rpx;/*margin 属性为给定元素设置所有四个（上下左右）方向的外边距属性。也就是 margin-top，margin-right，margin-bottom，和 margin-left 四个外边距属性设置的简写 */
-    border-bottom: 1px solid rgb(11, 165, 88);/* border-bottom 简写属性把下边框的所有属性：border-bottom-color，border-bottom-style 与 border-bottom-width 设置到了一个声明中。这些属性描述了元素的下边框样式。 */
-    text-align: center;
-    width: 650rpx;
-    height: 300rpx;
-    line-height: 450rpx;
-    margin-top: 120px;
+page {
+	background-color: white;
 }
-.header image {
-    width: 185rpx;
-    height: 185rpx;
-    border-radius: 50%;/* 图片圆角为50 */
-    margin-right: 20rpx;
-   }
-.bottom {
+.app-welcome {
+	margin: 30rpx 70rpx;/*margin 属性为给定元素设置所有四个（上下左右）方向的外边距属性。也就是 margin-top，margin-right，margin-bottom，和 margin-left 四个外边距属性设置的简写 */
+	display: flex;
+	flex-direction: row;
+}
+.app-welcome image {
+    width: 100rpx;
+    height: 100rpx;
+	/* 图片圆角为50 */
+    /* border-radius: 50%; */
+}
+
+.welcome-img-box {
+	margin: 30rpx 30rpx;
+/* 	background-image: url("../../static/image/wave (2).png");
+	background-position-x: center;
+	background-position-y: top;
+	background-repeat: no-repeat;
+	background-size: 100% auto; */
+}
+
+.welcome-img-box image {
+	width: 100%;
+	/* height : 100%; */
+	/* object-fit: cover; */
+}
+
+.button {
     border-radius: 80rpx;
     margin: 70rpx 50rpx;
     font-size: 35rpx;
 }
+
+.login-way-title {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin: 20rpx auto;
+}
   
+.login-way-box {
+	margin: 10rpx auto;
+}
+
+.login-way {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.login-way image {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+}

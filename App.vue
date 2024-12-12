@@ -5,20 +5,19 @@
 			};
 		},
 		globalData : {
-			host : 'https://lims.qiuhaotesting.com:8091',
-			// host : 'http://58.215.200.126:8090',
-			// host : 'http://localhost:8088',
-			// host : 'http://182.168.1.62:8088',
-			// host : 'http://cn-nd-plc-1.openfrp.top:55671',
+			// host : 'http://47.120.13.240:8089',
+			// host : 'http://localhost:8087',
+			// host : 'http://192.168.56.1:8087',
+			host : 'http://cn-qz-plc-1.ofalias.net:55134',
 			method : 'POST',
 			UserLogin : false,
-			appId : 'wx239100a18d156ddc',
+			appId : 'wxa6b4df1015ec63f9',
 			openId : '',
 			phoneNumber : '',
-			clientList : [],
+			userInfo : {},
 			folderList : [],
 			orderList : [],
-			mch_key : '1632389429',//商户密钥
+			mch_key : '',//商户密钥
 			
 			
 			// 不同机型页面信息
@@ -40,11 +39,9 @@
 			console.log('App Launch')
 			// 获取胶囊信息
 			let menuButtonObject = wx.getMenuButtonBoundingClientRect()
-			console.log(menuButtonObject)
 			// 获取设备信息
 			wx.getSystemInfo({
 			  success: res => {
-				console.log(res)
 				// 整个导航栏的高度
 				let navHeight = res.statusBarHeight + menuButtonObject.height + (menuButtonObject.top - res.statusBarHeight)*2
 				// 导航栏的高度
@@ -53,8 +50,8 @@
 				// 挂载到全区变量 globalData 上
 				this.globalData.navHeight = navHeight
 				this.globalData.nav = nav
-				console.log("navHeight",navHeight)
-				console.log("nav",nav)
+				console.log("导航栏的高度 + 真机状态栏高度",navHeight)
+				console.log("导航栏的高度",nav)
 				// 胶囊与左边的距离
 				this.globalData.menuLeft = menuButtonObject.left
 				// 胶囊的高度
@@ -82,16 +79,48 @@
 </script>
 
 <style>
-	
-
-		
 	/*每个页面公共css */
-
 	@import './common/uni.css';
 	@import '@/static/customicons.css';
 	@import '@/static/iconfont.css';
 	
 	@import "./colorui/main.css";
 	@import "./colorui/icon.css";
+	
+	/* ==================
+	        定义颜色
+	 ==================== */
+	 /* css也同样可以定义变量 */
+	 /* web开发中顶层变量的key名是:root，小程序使用page */
+	 page {
+	   --sunway-primary-color:  #4aa1ed;
+	   --sunway-minor-color: #295290;
+	 }
+	 
+	/**文本**/
+	.text-sunway-blue,
+	.line-sunway-blue,
+	.lines-sunway-blue {
+		color: var(--sunway-primary-color);
+	}
+	
+	/**背景**/
+	.bg-sunway-gradual-blue {
+		background-image: linear-gradient(45deg, #0081ff, var(--sunway-primary-color));
+		color: #ffffff;
+	}
+	.bg-sunway-blue {
+		background-color: var(--sunway-primary-color);
+		color: #ffffff;
+	}
+	.bg-sunway-grey {
+		background-color: #819191;
+		color: #ffffff;
+	}
+	/**按钮**/
+	.bt-sunway-blue {
+		background-color: var(--sunway-minor-color, black);
+		color: #ffffff;
+	}
 </style>
 	

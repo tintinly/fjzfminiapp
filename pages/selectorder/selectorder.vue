@@ -1,19 +1,17 @@
 <template>
     <view>
-		<view  class="bg-img" v-if="noData"><image mode="widthFix" src="../../static/image/noData.png"></image></view>
-			
 		<scroll-view scroll-x class="bg-white nav">
 			<view class="flex text-center">
-				<view class="cu-item flex-sub" :class="0==tabIndex?'text-qhjc-blue cur':''"  @tap="tabSelect" :data-id="0">
+				<view class="cu-item flex-sub" :class="0==tabIndex?'text-sunway-blue cur':''"  @tap="tabSelect" :data-id="0">
 					全部
 				</view>
-				<view class="cu-item flex-sub" :class="1==tabIndex?'text-qhjc-blue cur':''"  @tap="tabSelect" :data-id="1">
+				<view class="cu-item flex-sub" :class="1==tabIndex?'text-sunway-blue cur':''"  @tap="tabSelect" :data-id="1">
 					已取消
 				</view>
-				<view class="cu-item flex-sub" :class="2==tabIndex?'text-qhjc-blue cur':''"  @tap="tabSelect" :data-id="2">
+				<view class="cu-item flex-sub" :class="2==tabIndex?'text-sunway-blue cur':''"  @tap="tabSelect" :data-id="2">
 					待支付
 				</view>
-				<view class="cu-item flex-sub" :class="3==tabIndex?'text-qhjc-blue cur':''"  @tap="tabSelect" :data-id="3">
+				<view class="cu-item flex-sub" :class="3==tabIndex?'text-sunway-blue cur':''"  @tap="tabSelect" :data-id="3">
 					待评价
 					<view class="tab-tag" v-if="toCommentSize > 0" >
 						<block v-if="toCommentSize!=1">{{toCommentSize>99?'99+':toCommentSize}}</block>
@@ -21,15 +19,16 @@
 				</view>
 			</view>
 		</scroll-view>
+		<sunway-empty-data v-if="noData" imgSrc="/static/image/cue/empty.svg"></sunway-empty-data>
 	
 		<view class="margin bg-white box-radius" v-for="item in wxOrderList"  @tap="toPage('../orderdetail/orderdetail?wxOrderId=' + item.id)">
 			<view class="flex padding-xs solid-bottom">
 				<view class="flex-tre" v-if="item.isSampleType == '1'">
-					<text class="cuIcon-form text-sm text-qhjc-blue margin-right-xs"></text>
+					<text class="cuIcon-form text-sm text-sunway-blue margin-right-xs"></text>
 					<text class="text-df text-bold"> {{item.testOrgName}}（采样任务）</text>
 				</view>
 				<view class="flex-tre" v-else>
-					<text class="cuIcon-form text-sm text-qhjc-blue margin-right-xs"></text>
+					<text class="cuIcon-form text-sm text-sunway-blue margin-right-xs"></text>
 					<text class="text-df text-bold"> {{item.testOrgName}}（送样任务）</text>
 				</view>
 				<view class="flex-sub">
@@ -118,9 +117,9 @@
 					title: '查询中...',
 				})
 				uni.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-wx-order',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-wx-order',
 					data : {
-						clientContactId : getApp().globalData.clientList.clientContactId,
+						clientContactId : getApp().globalData.userInfo.clientContactId,
 						openId : getApp().globalData.openId,
 						tradeState : tradeState,
 						comment : comment,

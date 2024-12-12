@@ -2,7 +2,7 @@
 	<view>
 		<view class="margin bg-white box-radius">
 			<view class="padding-sm solids-bottom">
-				<text class="cuIcon-title text-qhjc-blue padding-right-sm"></text><text class="text-bold">委托单位信息</text>
+				<text class="cuIcon-title text-sunway-blue padding-right-sm"></text><text class="text-bold">委托单位信息</text>
 			</view>
 			<view class="flex flex-wrap padding solid-bottom">
 				<view class="basis-xs text-bold ">单位名称</view>
@@ -23,7 +23,7 @@
 		</view>
 		<view v-if="!sameTpye" class="margin bg-white box-radius">
 			<view class="padding-sm solids-bottom">
-				<text class="cuIcon-title text-qhjc-blue padding-right-sm"></text><text class="text-bold">受检单位信息</text>
+				<text class="cuIcon-title text-sunway-blue padding-right-sm"></text><text class="text-bold">受检单位信息</text>
 			</view>
 			<view class="flex flex-wrap padding solid-bottom">
 				<view class="basis-xs text-bold ">单位名称</view>
@@ -44,7 +44,7 @@
 		</view>
 		<view class="margin bg-white box-radius">
 			<view class="padding-sm solids-bottom">
-				<text class="cuIcon-title text-qhjc-blue padding-right-sm"></text><text class="text-bold">选项</text>
+				<text class="cuIcon-title text-sunway-blue padding-right-sm"></text><text class="text-bold">选项</text>
 			</view>
 			<view class="flex padding solid-bottom">
 				<view class="flex-sub">
@@ -61,7 +61,7 @@
 					<text class="text-bold">是否需要开票</text>
 				</view>
 				<view class="flex-sub ">
-					<switch class=" fr" @change="needBill" color="#39a1e1" :checked="billType" />
+					<switch class=" fr" @change="needBill" color="#4aa1ed" :checked="billType" />
 				</view>
 			</view>
 			<view class="flex padding solid-bottom">
@@ -69,7 +69,7 @@
 					<text class="text-bold">是否需要纸质报告</text>
 				</view>
 				<view class="flex-sub ">
-					<switch class=" fr" @change="needPaper" color="#39a1e1" :checked="paperType" />
+					<switch class=" fr" @change="needPaper" color="#4aa1ed" :checked="paperType" />
 				</view>
 			</view>
 			<view v-if="paperType" class="flex padding solid-bottom">
@@ -85,7 +85,7 @@
 					<text class="text-bold">受检单位同委托单位</text>
 				</view>
 				<view class="flex-sub ">
-					<switch class="fr" @change="isSame" color="#39a1e1" :checked="sameTpye" />
+					<switch class="fr" @change="isSame" color="#4aa1ed" :checked="sameTpye" />
 				</view>
 			</view>
 			<view class="flex padding solid-bottom">
@@ -93,7 +93,7 @@
 					<text class="text-bold">是否采样</text>
 				</view>
 				<view class="flex-sub ">
-					<switch class="fr" @change="changeSample" color="#39a1e1" :checked="checked" />
+					<switch class="fr" @change="changeSample" color="#4aa1ed" :checked="checked" />
 				</view>
 			</view>
 		</view>
@@ -102,7 +102,7 @@
 		
 		<view v-if="isSample" class="margin bg-white box-radius">
 			<view class="padding-sm solids-bottom">
-				<text class="cuIcon-title  text-qhjc-blue padding-right-sm"></text><text class="text-bold">点位信息</text>
+				<text class="cuIcon-title  text-sunway-blue padding-right-sm"></text><text class="text-bold">点位信息</text>
 			</view>
 			<uni-swipe-action v-for="item in folderNumberList">
 				<uni-swipe-action-item :right-options="options"  @click="swipeFolder($event, item)" @change="swipeChange" >
@@ -137,7 +137,7 @@
 			
 			<view class="flex padding solid-bottom" @tap="Navigate(`../folder/folder,${folderNumber + 1}`)">
 				<view class="flex-sub">
-					<text class="cuIcon-add text-qhjc-blue"></text><text class="text-bold">添加点位信息</text>
+					<text class="cuIcon-add text-sunway-blue"></text><text class="text-bold">添加点位信息</text>
 				</view>
 				<view class="flex-sub ">
 					<text class="cuIcon-right fr"></text>
@@ -147,7 +147,7 @@
 		
 		<view v-if="notSample" class="margin bg-white box-radius">
 			<view class="padding-sm solids-bottom">
-				<text class="cuIcon-title  text-qhjc-blue padding-right-sm"></text><text class="text-bold">样品信息</text>
+				<text class="cuIcon-title  text-sunway-blue padding-right-sm"></text><text class="text-bold">样品信息</text>
 			</view>
 			<uni-swipe-action v-for="item in orderNumberList">
 				<uni-swipe-action-item :right-options="options"  @click="swipeOrder" @change="swipeChange" >
@@ -182,7 +182,7 @@
 			
 			<view class="flex padding solid-bottom" @tap="Navigate(`../order/order,${orderNumber + 1}`)">
 				<view class="flex-sub">
-					<text class="cuIcon-add text-qhjc-blue"></text><text class="text-bold">添加样品信息</text>
+					<text class="cuIcon-add text-sunway-blue"></text><text class="text-bold">添加样品信息</text>
 				</view>
 				<view class="flex-sub ">
 					<text class="cuIcon-right fr"></text>
@@ -192,7 +192,7 @@
 		
 		
 		<view class="padding-bottom-xs">
-			<button class="button bg-qhjc-blue" @tap="submit"><text class="text-white">下单</text></button>
+			<button class="button bt-sunway-blue" @tap="submit"><text class="text-white">下单</text></button>
 		</view>
 	</view>
 </template>
@@ -213,16 +213,16 @@
 					monitorTmplSelectList : [],
 					
 					//委托单位相关参数
-					entrustOrgName : getApp().globalData.clientList.clientName,
-					entrustOrgAddress : getApp().globalData.clientList.address,
-					entrustOrgContact : getApp().globalData.clientList.lxrName,
-					entrustOrgPhone : getApp().globalData.clientList.lxrPhone,
+					entrustOrgName : getApp().globalData.userInfo.clientName,
+					entrustOrgAddress : getApp().globalData.userInfo.address,
+					entrustOrgContact : getApp().globalData.userInfo.lxrName,
+					entrustOrgPhone : getApp().globalData.userInfo.lxrPhone,
 					
 					//受检单位相关参数
-					testOrgName : getApp().globalData.clientList.clientName,
-					testOrgAddress : getApp().globalData.clientList.address,
-					testOrgContact : getApp().globalData.clientList.lxrName,
-					testOrgPhone : getApp().globalData.clientList.lxrPhone,
+					testOrgName : getApp().globalData.userInfo.clientName,
+					testOrgAddress : getApp().globalData.userInfo.address,
+					testOrgContact : getApp().globalData.userInfo.lxrName,
+					testOrgPhone : getApp().globalData.userInfo.lxrPhone,
 					
 					
 					//点位数量
@@ -293,7 +293,7 @@
 			}
 		
 			wx.request({
-				url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-detection-factor-price',
+				url: getApp().globalData.host + '/open/emc/module/bp/wechat/select-detection-factor-price',
 				method: getApp().globalData.method,
 				success: (res) => {
 					var detectionFactionList = res.data;
@@ -301,7 +301,7 @@
 				},
 			});
 			wx.request({
-				url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-monitor-tmpl',
+				url: getApp().globalData.host + '/open/emc/module/bp/wechat/select-monitor-tmpl',
 				method: getApp().globalData.method,
 				success: (res) => {
 					var list = res.data;
@@ -635,11 +635,11 @@
 			
 								/*** 请求后台  服务端调用微信支付接口 ***/
 								wx.request({
-									url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/create-PreOrder',
+									url: getApp().globalData.host + '/open/emc/module/bp/wechat/create-PreOrder',
 									method: getApp().globalData.method,
 									data : {
 										"openId": getApp().globalData.openId,
-										"clientContactId" : getApp().globalData.clientList.clientContactId,
+										"clientContactId" : getApp().globalData.userInfo.clientContactId,
 										"orderNo": (new Date().getTime()).toString(),
 										"desc": "委托监测",
 										"price": 1,
@@ -691,7 +691,7 @@
 												console.log('支付情况',res)
 												// 付款成功后数据传回后台生成合同以及任务
 												wx.request({
-													url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/create-data',
+													url: getApp().globalData.host + '/open/emc/module/bp/wechat/create-data',
 													data : {
 														wxOrderId : wxOrderId,
 														folderList : folderList,

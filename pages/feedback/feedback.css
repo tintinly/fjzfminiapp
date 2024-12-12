@@ -1,0 +1,43 @@
+
+	.content_wrap{
+	    background-color: #fff;
+		box-shadow: 10px 10px 5px rgba(39, 48, 57, 0.05);
+	}
+	
+
+	.content{
+	    padding: 10rpx;
+	    margin: 0 auto;
+	}
+	
+	.title-bar {
+		display: flex;
+		align-items: center;
+		min-height: 70upx;
+		justify-content: space-between;
+	}
+	
+	.button{
+		border-radius: 80rpx;
+		margin: 40rpx 50rpx;
+		font-size: 35rpx;
+	
+	}
+	
+	textarea{
+		  padding: 0rpx 20rpx;
+	    min-height: 300rpx;
+	    width: 100%;
+	}
+	
+	.word-count {
+		text-align: right;
+		padding: 0rpx 20rpx;
+	}
+	
+	.menuButton {
+		width: 100%;
+		background-color: #ffffff;
+		text-align: left;
+		padding: 7px 15px;
+	}

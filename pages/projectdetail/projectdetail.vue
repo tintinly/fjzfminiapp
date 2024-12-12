@@ -22,10 +22,10 @@
 			<view class="content-bar solid-bottom">
 				<scroll-view scroll-x class="bg-white nav">
 					<view class="flex text-center">
-						<view class="cu-item flex-sub " :class="tabIndex==1?'text-qhjc-blue cur':''"   @tap="tabSelect" data-id="1" >
+						<view class="cu-item flex-sub " :class="tabIndex==1?'text-sunway-blue cur':''"   @tap="tabSelect" data-id="1" >
 							任务进度
 						</view>
-						<view class="cu-item flex-sub " :class="tabIndex==2?'text-qhjc-blue cur':''"   @tap="tabSelect" data-id="2" >
+						<view class="cu-item flex-sub " :class="tabIndex==2?'text-sunway-blue cur':''"   @tap="tabSelect" data-id="2" >
 							文件列表
 						</view>
 					</view>
@@ -201,7 +201,7 @@
 					title : '查询中'
 				})
 				wx.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-project-detail',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-project-detail',
 					data : {
 						projectId : projId
 					},

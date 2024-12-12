@@ -1,8 +1,5 @@
 <template>
 	<view>
-		<!-- 无数据背景图 -->
-		<view  class="error-bg" v-if="noData"><image mode="widthFix" src="../../static/image/noData.png"></image></view>
-		
 		<view class="tab-tag">
 			<view class="cu-capsule round">
 				<view class="cu-tag " :class="[tabIndex===1 ? 'bg-blue' : 'line-blue']" @tap="switchTab" :data-id="1">
@@ -13,6 +10,7 @@
 				</view>
 			</view>
 		</view>
+		<sunway-empty-data v-if="noData" imgSrc="/static/image/cue/empty.svg"></sunway-empty-data>
 		
 		<view v-if="tabIndex === 1">
 			<view class="box-head">
@@ -24,7 +22,7 @@
 			</view>
 			<view class="margin-lr bg-white box-radius" >
 				<view class="padding-lr padding-tb-xs solid-bottom"  >
-					<text class="cuIcon-title text-sm text-qhjc-blue margin-right-xs"></text><text class="text-lg text-bold">委托内容</text>
+					<text class="cuIcon-title text-sm text-sunway-blue margin-right-xs"></text><text class="text-lg text-bold">委托内容</text>
 				</view>
 				<view class="content-image " v-if="entrustImageList.length > 0">
 					<view class="grid col-4 grid-square">
@@ -42,7 +40,7 @@
 				<!-- <view class="content-title solid-bottom" @tap="viewReport(item.projId)" > -->
 				<view class="content-title solid-bottom"  >
 					<view class="title-left">
-							<text class="cuIcon-form text-sm text-qhjc-blue margin-right-xs"></text>
+							<text class="cuIcon-form text-sm text-sunway-blue margin-right-xs"></text>
 							<text class="text-df text-bold"> {{item.projName}}</text>
 					</view>
 					<view class="title-right">
@@ -117,7 +115,7 @@
 					title: '查询中...',
 				})
 				uni.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-entrust-detail',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-entrust-detail',
 					data : {
 						entrustId : this.entrustId,
 					},
@@ -169,9 +167,9 @@
 					return
 				}
 				wx.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-contract',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-contract',
 					data : {
-						clientNo : getApp().globalData.clientList.clientNo,
+						clientNo : getApp().globalData.userInfo.clientNo,
 						entrustId : this.entrustId
 					},
 					method : getApp().globalData.method,

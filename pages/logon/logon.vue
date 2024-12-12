@@ -78,7 +78,7 @@
 	export default {
 		data () {
 			return {
-				clientList : [],
+				userInfo : {},
 				//用户信息
 				avatarDesc : "请选择头像",
 				userInfo : {
@@ -183,7 +183,7 @@
 						resolve('')
 					}
 					uni.uploadFile({
-						url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/upload-file',
+						url: getApp().globalData.host + '/open/emc/module/bp/wechat/upload-file',
 						filePath: this.userInfo.avatar,
 						name:  'file', 
 						formData: {
@@ -222,10 +222,10 @@
 							console.log('afterurl', url)
 							this.userInfo.avatar = url
 							wx.request({
-								url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/update-client',
+								url: getApp().globalData.host + '/open/emc/module/bp/wechat/update-client',
 								data: {
 									openId : openId,
-									clientId : _this.clientList == undefined ? '' : _this.clientList.clientId,
+									clientId : _this.userInfo == undefined ? '' : _this.userInfo.clientId,
 									userInfo : this.userInfo,
 									personInfo : this.personInfo,
 									companyInfo : this.companyInfo
@@ -261,14 +261,14 @@
 				var _utils = utils;
 				if(options == 'login'){
 					wx.request({
-						url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-client-detail',
+						url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-client-detail',
 						data : {
 							openId : getApp().globalData.openId,
 							phoneNumber : getApp().globalData.phoneNumber
 						},
 						method : 'POST',
 						success : (clientData) =>{
-							wx.setStorageSync('clientList', clientData.data);
+							wx.setStorageSync('userInfo', clientData.data);
 							_utils.IsLogon();
 							uni.switchTab({
 								url: '../home/home',

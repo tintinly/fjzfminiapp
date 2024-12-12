@@ -1,9 +1,31 @@
 <template>
-	<view class="header">
-		<image src="/static/image/loginpic3.png"></image>
-		<!-- 授权登录按钮 -->
-		<!-- <button class="bottom" @tap="login" type="primary">微信快速授权登录</button> -->
-		<button class="bottom" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信快速授权登录</button>
+	<view>
+		<sunway-navbar :backShow="false" :titleShow="false"></sunway-navbar>
+		<view class="app-welcome">
+			<image src="../../static/image/loginpic.jpg"></image>
+			<view class="margin-left-lg">
+				<view class="margin-bottom-xs "><text>欢迎使用</text></view>
+				<view><text class="text-xxl">中孚检测</text></view>
+			</view>
+		</view>
+		<view class="welcome-img-box">
+			<image mode="widthFix" src="../../static/image/science-detect.svg"></image>
+		</view>
+		
+		<button class="button bt-sunway-blue" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"><text>一键登录/注册</text></button>
+		
+		<view class="login-way-box">
+			<view class="login-way-title">
+				<view class="solid" style="width: 70rpx; height: 1px;"></view>
+				<view class="margin-lr-sm"><text class=" text-sm text-gray " >其他登录方式</text></view>
+				<view class="solid" style="width: 70rpx; height: 1px;"></view>
+			</view>
+			<view class="login-way" @click="toPage('../emclogin/emclogin')">
+				<view class="margin-right-sm"><image src="../../static/image/gikam.svg"></image></view>
+				<view><text>环境监测业务管理系统</text></view>
+			</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -24,6 +46,17 @@
 			},
 			getPhoneNumber(e){
 				login.methods.getPhoneNumber(e)
+			},
+			toPage : function (url){
+				uni.navigateTo({
+					url : url 
+				})
+			},
+			back : function(e) {
+			// 在C页面内 navigateBack，将返回A页面
+				uni.navigateBack({
+					delta: 1
+				});
 			},
 		}
 	}

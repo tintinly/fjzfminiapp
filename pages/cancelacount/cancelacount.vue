@@ -28,7 +28,7 @@
 								title: '正在注销'
 							});
 							wx.request({
-								url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/cancel-account',
+								url : getApp().globalData.host + '/open/emc/module/bp/wechat/cancel-account',
 								data : {
 									openId : getApp().globalData.openId,
 									phoneNumber : getApp().globalData.phoneNumber

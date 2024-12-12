@@ -3,7 +3,7 @@
 		<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg">
 			<view class="cu-item arrow" @click="cancelAcount">
 				<view class="content">
-					<text class="cuIcon-deletefill text-qhjc-blue"></text>
+					<text class="cuIcon-deletefill text-sunway-blue"></text>
 					<text class="text-black">账号注销</text>
 				</view>
 			</view>
@@ -27,7 +27,7 @@
 				});
 				getApp().globalData.openId = ''
 				getApp().globalData.phoneNumber = ''
-				getApp().globalData.clientList = []
+				getApp().globalData.userInfo = []
 				try {
 					uni.clearStorageSync();
 				} catch (e) {
@@ -52,7 +52,7 @@
 								title: '正在注销'
 							});
 							wx.request({
-								url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/cancel-account',
+								url : getApp().globalData.host + '/open/emc/module/bp/wechat/cancel-account',
 								data : {
 									openId : getApp().globalData.openId,
 									phoneNumber : getApp().globalData.phoneNumber
@@ -101,11 +101,5 @@
 </script>
 
 <style>
-	
-	.button{
-		border-radius: 80rpx;
-		margin: 50rpx 50rpx;
-		font-size: 35rpx;
-		/* background-color: cornflowerblue; */
-	}
+	@import url(../option/option.css);
 </style>

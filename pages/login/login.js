@@ -12,7 +12,7 @@
 								});
 								var code = loginData.code;
 								wx.request({
-									url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/get-openId',
+									url: getApp().globalData.host + '/open/emc/module/bp/wechat/get-openId',
 									method : 'POST',
 									data : {
 										appId : getApp().globalData.appId,
@@ -21,7 +21,7 @@
 									},
 									success:(openIdData)=>{
 										wx.request({
-											url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-client-detail',
+											url: getApp().globalData.host + '/open/emc/module/bp/wechat/select-client-detail',
 											data: {
 												openId : openIdData.data.openid
 											},
@@ -29,12 +29,10 @@
 											success: (clientData) =>{
 												var openId = openIdData.data.openid;
 												wx.setStorageSync('openId', openId);
-												console.log("用户信息",userInfo);
-												console.log("openId",openId);
 												if(clientData.data.clientId != undefined){
-													var clientList = clientData.data;
-													wx.setStorageSync('clientList', clientList);
-													console.log("clientList",clientList);
+													var userInfo = clientData.data;
+													wx.setStorageSync('userInfo', userInfo);
+													console.log("用户信息",userInfo);
 													utils.default.IsLogon();
 													wx.switchTab({
 														url: '../home/home',
@@ -49,9 +47,6 @@
 											},
 											fail: clientData=>{
 												console.log('获取用户信息失败',clientData);
-												console.log('openIdData',openIdData);
-												console.log('loginData',loginData);
-												console.log('res',res);
 												wx.navigateTo({
 													url: '../login/login',
 												});
@@ -61,8 +56,6 @@
 									},
 									fail: openIdData=>{
 										console.log('获取openId失败',openIdData);
-										console.log('loginData',loginData);
-										console.log('res',res);
 										wx.navigateTo({
 											url: '../login/login',
 										});
@@ -71,7 +64,6 @@
 								})
 								fail: loginData=>{
 									console.log('登录失败',loginData);
-									console.log('res',res);
 									wx.navigateTo({
 										url: '../login/login',
 									});
@@ -106,17 +98,17 @@
 				wx.login({
 					success: (res)=>{
 						var loginCode = res.code
+						console.log('微信登录授权码',loginCode);
 						if (loginCode) {
 							//发起网络请求
 							uni.showLoading({
 								title: '登陆中'
 							});
 							wx.request({
-								url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/get-openId',
+								url: getApp().globalData.host + '/open/emc/module/bp/wechat/get-openId',
 								method : 'POST',
 								data: {
 									appId : getApp().globalData.appId,
-									secret : getApp().globalData.secret,
 									loginCode: loginCode,
 						        },
 								success:(openIdData)=>{
@@ -129,22 +121,23 @@
 										})
 									}
 									wx.request({
-										url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/get-phone',
+										url: getApp().globalData.host + '/open/emc/module/bp/wechat/get-phone',
 										method : 'POST',
 										data: {
+											appId : getApp().globalData.appId,
 											phoneCode: phoneCode
 										},
 										success : (phoneData)=>{
 											var phoneNumber = phoneData.data.phone_info.phoneNumber
 											wx.request({
-												url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-client-detail',
+												url: getApp().globalData.host + '/open/emc/module/bp/wechat/select-client-detail',
 												data: {
 													openId : openIdData.data.openid,
 													phoneNumber: phoneNumber
 												},
 												method : 'POST',
 												success: (clientData) =>{
-													console.log("clientData",clientData)
+													console.log("用户信息",clientData)
 													if (clientData.statusCode === 500 || clientData.statusCode === 404) {
 														uni.showToast({
 															duration:1500,
@@ -156,9 +149,9 @@
 													wx.setStorageSync('phoneNumber', phoneNumber);
 													wx.setStorageSync('openId', openId);
 													if(clientData.data.clientId != undefined){
-														var clientList = clientData.data;
-														wx.setStorageSync('clientList', clientList);
-														console.log("clientList",clientList);
+														var userInfo = clientData.data;
+														wx.setStorageSync('userInfo', userInfo);
+														console.log("用户信息",userInfo);
 														utils.default.IsLogon();
 														that.selectRedDotCue();
 														wx.switchTab({
@@ -174,8 +167,6 @@
 												},
 												fail: clientData=>{
 													console.log('获取用户信息失败',clientData);
-													console.log('openIdData',openIdData);
-													console.log('res',res);
 													wx.navigateTo({
 														url: '../login/login',
 													});
@@ -188,8 +179,6 @@
 										},
 										fail : (phoneData)=>{
 											console.log('获取手机信息失败',clientData);
-											console.log('phoneData',phoneData);
-											console.log('res',res);
 											wx.navigateTo({
 												url: '../login/login',
 											});
@@ -202,7 +191,6 @@
 								},
 								fail: openIdData=>{
 									console.log('获取openId失败',openIdData);
-									console.log('res',res);
 									wx.navigateTo({
 										url: '../login/login',
 									});
@@ -224,13 +212,14 @@
 				wx.login({
 					success: (res)=>{
 						var loginCode = res.code
+						console.log('微信登录授权码', loginCode);
 						if (loginCode) {
 							//发起网络请求
 							uni.showLoading({
 								title: '登陆中'
 							});
 							wx.request({
-								url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/get-openId',
+								url: getApp().globalData.host + '/open/emc/module/bp/wechat/get-openId',
 								method : 'POST',
 								data: {
 									appId : getApp().globalData.appId,
@@ -247,13 +236,13 @@
 										})
 									}
 									wx.request({
-										url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-client-detail',
+										url: getApp().globalData.host + '/open/emc/module/bp/wechat/select-client-detail',
 										data: {
 											openId : openIdData.data.openid
 										},
 										method : 'POST',
 										success: (clientData) =>{
-											console.log("clientData",clientData)
+											console.log("用户信息",clientData)
 											if (clientData.statusCode === 500 || clientData.statusCode === 404) {
 												uni.showToast({
 													duration:1500,
@@ -264,10 +253,10 @@
 											var openId = openIdData.data.openid;
 											wx.setStorageSync('openId', openId);
 											if(clientData.data.clientId != undefined){
-												var clientList = clientData.data;
-												wx.setStorageSync('clientList', clientList);
-												wx.setStorageSync('phoneNumber', clientList.lxrPhone);
-												console.log("clientList",clientList);
+												var userInfo = clientData.data;
+												wx.setStorageSync('userInfo', userInfo);
+												wx.setStorageSync('phoneNumber', userInfo.lxrPhone);
+												console.log("用户信息",userInfo);
 												utils.default.IsLogon();
 											}else {
 												utils.default.IsLogon();
@@ -279,8 +268,6 @@
 										},
 										fail: clientData=>{
 											console.log('获取用户信息失败',clientData);
-											console.log('openIdData',openIdData);
-											console.log('res',res);
 											wx.navigateTo({
 												url: '../login/login',
 											});
@@ -294,7 +281,6 @@
 								},
 								fail: openIdData=>{
 									console.log('获取openId失败',openIdData);
-									console.log('res',res);
 									wx.navigateTo({
 										url: '../login/login',
 									});
@@ -313,10 +299,10 @@
 			
 			selectRedDotCue() {
 				wx.request({
-					url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-red-dot-cue',
+					url: getApp().globalData.host + '/open/emc/module/bp/wechat/select-red-dot-cue',
 					data: {
 						openId : getApp().globalData.openId,
-						clientContactId : getApp().globalData.clientList.clientContactId,
+						clientContactId : getApp().globalData.userInfo.clientContactId,
 					},
 					method : 'POST',
 					success : (res) => {
@@ -335,7 +321,6 @@
 							});
 						} else {
 							var data = res.data;
-							console.log(data)
 							Object.keys(data).forEach(k=>{
 								getApp().globalData.redDotCue[k] = data[k];
 								uni.$emit(k, data[k]);
@@ -356,7 +341,6 @@
 					},
 					fail : (res) =>{
 						resolve('fail');
-						console.log(res)
 						uni.hideLoading()
 						uni.showToast({
 							title: '网络错误',

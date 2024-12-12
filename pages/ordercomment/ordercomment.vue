@@ -41,7 +41,7 @@
 			</view>
 		
 			<view class="padding-bottom-xs">
-				<button v-if="!readonly" class="button " :class="submitable ? 'bg-qhjc-blue' : 'bg-qhjc-grey'" @click="submit"><text class="text-white">提交</text></button>
+				<button v-if="!readonly" class="button " :class="submitable ? 'bg-sunway-blue' : 'bg-sunway-grey'" @click="submit"><text class="text-white">提交</text></button>
 			</view>
 		</view>
 	</view>
@@ -135,11 +135,11 @@
 					title : '加载中'
 				})
 				uni.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/submit-feedback',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/submit-feedback',
 					data : {
 						openId : getApp().globalData.openId,
-						clientId : getApp().globalData.clientList.clientId,
-						clientContactId : getApp().globalData.clientList.clientContactId,
+						clientId : getApp().globalData.userInfo.clientId,
+						clientContactId : getApp().globalData.userInfo.clientContactId,
 						commentList : this.commentList,
 						feedbackContent : this.feedbackContent,
 						coChannel : this.coChannel,
@@ -182,7 +182,7 @@
 					title: '查询中...',
 				})
 				uni.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-feedback',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-feedback',
 					data : {
 						wxOrderId : wxOrderId,
 					},

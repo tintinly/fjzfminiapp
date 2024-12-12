@@ -1,7 +1,7 @@
-# qhjc-miniapp
+# zfjc-miniapp
 
 #### Description
-秋毫检测微信小程序
+中孚检测微信小程序
 
 #### Software Architecture
 Software architecture description

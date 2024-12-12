@@ -213,8 +213,8 @@
 		<view class="margin-top" :style="'height:' + (unSafeButtomHeight + btnHeight * 1 + btnMargin * 2 * 1) + 'px;'  "></view>
 		<view class="btn-group-bottom " :style="'height:' + (unSafeButtomHeight + btnHeight * 1 + btnMargin * 2 * 1) + 'px;'  ">
 			<view class="flex justify-end" :style="'height:' + (btnHeight * 1 + btnMargin * 2 * 1) + 'px;'  ">
-				<button class="button bg-qhjc-blue text-white" :style="'line-height:' + btnHeight + 'px; margin : ' + btnMargin + 'px ;' " @click="pay" v-if="order.tradeState === 'NOTPAY'"  >立即支付</button>
-				<button class="button  bg-qhjc-blue text-white" :style="'line-height:' + btnHeight + 'px; margin : ' + btnMargin + 'px ;' " @click="cancelWxOrder" v-if="order.tradeState === 'NOTPAY'" >取消订单</button>
+				<button class="button bg-sunway-blue text-white" :style="'line-height:' + btnHeight + 'px; margin : ' + btnMargin + 'px ;' " @click="pay" v-if="order.tradeState === 'NOTPAY'"  >立即支付</button>
+				<button class="button  bg-sunway-blue text-white" :style="'line-height:' + btnHeight + 'px; margin : ' + btnMargin + 'px ;' " @click="cancelWxOrder" v-if="order.tradeState === 'NOTPAY'" >取消订单</button>
 				<button class="button  bg-yellow text-white" :style="'line-height:' + btnHeight + 'px; margin : ' + btnMargin + 'px ;' " @click="commentWxOrder" v-if="order.tradeState === 'SUCCESS'">评价</button>
 				<button class="button bg-green text-white" :style="'line-height:' + btnHeight + 'px; margin : ' + btnMargin + 'px ;' " open-type='contact'>联系客服</button>
 			</view>
@@ -305,7 +305,7 @@
 					title: '查询中...',
 				})
 				uni.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-wx-order-detail',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-wx-order-detail',
 					data : {
 						wxOrderId : wxOrderId,
 					},
@@ -390,7 +390,7 @@
 					title: '请等待...',
 				})
 				uni.request({
-					url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/cancel-wx-order',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/cancel-wx-order',
 					data : {
 						wxOrderId : this.wxOrderId,
 						expired : '1'
@@ -435,7 +435,7 @@
 						console.log('支付情况',res)
 						// 付款成功后数据传回后台生成合同以及任务
 						wx.request({
-							url: getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/create-data',
+							url: getApp().globalData.host + '/open/emc/module/bp/wechat/create-data',
 							data : {
 								wxOrderId : this.wxOrderId,
 								folderList : this.orderDetailList,
@@ -499,7 +499,7 @@
 								title: '请等待...',
 							})
 							uni.request({
-								url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/cancel-wx-order',
+								url : getApp().globalData.host + '/open/emc/module/bp/wechat/cancel-wx-order',
 								data : {
 									wxOrderId : this.wxOrderId,
 									expired : '0'

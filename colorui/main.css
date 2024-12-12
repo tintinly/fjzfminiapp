@@ -1,5 +1,5 @@
 /*
-tintin已改 
+liuye@sunwayworld.com 已禁用开关样式
 */
 
 /*
@@ -94,13 +94,13 @@ image.loading::after {
          开关
  ==================== */
 
-switch,
+/* switch,
 checkbox,
 radio {
 	position: relative;
-}
+} */
 
-switch::after,
+/* switch::after,
 switch::before {
 	font-family: "cuIcon";
 	content: "\e645";
@@ -136,10 +136,10 @@ switch.checked::after {
 switch[checked]::before,
 switch.checked::before {
 	transform: scale(0, 0);
-}
+} */
 
 /* #ifndef MP-ALIPAY */
-radio::before,
+/* radio::before,
 checkbox::before {
 	font-family: "cuIcon";
 	content: "\e645";
@@ -151,7 +151,7 @@ checkbox::before {
 	font-size: 32upx;
 	line-height: 16px;
 	pointer-events: none;
-	transform: scale(1, 1);
+	transform: scale(0.7);
 	transition: all 0.3s ease-in-out 0s;
 	z-index: 9;
 }
@@ -168,10 +168,10 @@ checkbox .uni-checkbox-input {
 checkbox.round .wx-checkbox-input,
 checkbox.round .uni-checkbox-input {
 	border-radius: 100upx;
-}
+} */
 
 /* #endif */
-
+/* 
 switch[checked]::before {
 	transform: scale(0, 0);
 }
@@ -215,10 +215,10 @@ switch .uni-switch-input.uni-switch-input-checked::after {
 
 radio-group {
 	display: inline-block;
-}
+} */
 
 
-
+/*
 switch.radius .wx-switch-input::after,
 switch.radius .wx-switch-input,
 switch.radius .wx-switch-input::before,
@@ -228,7 +228,7 @@ switch.radius .uni-switch-input::before {
 	border-radius: 10upx;
 }
 
-switch .wx-switch-input::before,
+ switch .wx-switch-input::before,
 radio.radio::before,
 checkbox .wx-checkbox-input::before,
 radio .wx-radio-input::before,
@@ -237,7 +237,7 @@ radio.radio::before,
 checkbox .uni-checkbox-input::before,
 radio .uni-radio-input::before {
 	display: none;
-}
+} */
 
 radio.radio[checked]::after,
 radio.radio .uni-radio-input-checked::after {
@@ -262,7 +262,7 @@ radio.radio .uni-radio-input-checked::after {
 	border: 8px solid #ffffff !important;
 	/* #endif */
 }
-
+/* 
 .switch-sex::after {
 	content: "\e71c";
 }
@@ -453,7 +453,7 @@ radio.white.checked .uni-radio-input {
 	background-color: #ffffff !important;
 	border-color: #ffffff !important;
 	color: #333333 !important;
-}
+} */
 
 /* ==================
           边框
@@ -3488,16 +3488,6 @@ scroll-view.cu-steps .cu-item {
 	color: #666666;
 }
 
-.bg-qhjc-blue {
-	background-color: #4aa1ed;
-	color: #ffffff;
-}
-
-.bg-qhjc-grey {
-	background-color: #819191;
-	color: #ffffff;
-}
-
 .bg-shadeTop {
 	background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.01));
 	color: #ffffff;
@@ -3596,11 +3586,6 @@ scroll-view.cu-steps .cu-item {
 
 .bg-gradual-blue {
 	background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
-	color: #ffffff;
-}
-
-.bg-gradual-qhjc-blue {
-	background-image: linear-gradient(45deg, #0081ff, #4aa1ed);
 	color: #ffffff;
 }
 
@@ -3944,8 +3929,3 @@ scroll-view.cu-steps .cu-item {
 	color: #ffffff;
 }
 
-.text-qhjc-blue,
-.line-qhjc-blue,
-.lines-qhjc-blue {
-	color: #4aa1ed;
-}

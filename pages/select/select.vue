@@ -45,7 +45,7 @@
 						title : '查询中'
 					})
 					wx.request({
-						url : getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-contract',
+						url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-contract',
 						data : {
 							clientNo : this.clientNo
 						},

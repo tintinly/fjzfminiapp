@@ -9,51 +9,38 @@
 					<button class="button2" @tap="select"></button>
 				</view>
 	 -->
-			<view class="button-row">
-				<view class="card-inside" @tap="placeorder">
-					<uni-icons class="card-icon" custom-prefix="iconfont" type="icon-gouwuche" size="50" color="#2f7efd" ></uni-icons>
-					<view class="card-content"> 
-						<view class="card-title"> 自助下单 </view>
-						<view class="card-desc"> ORDER </view>
-					</view>
+			<view class="function-grid">
+				<view class="function-grid-box" @tap="placeorder">
+					<view class="text-xsl text-sunway-blue "><text class="cuIcon-cart"></text></view>
+					<view class="text-lg text-bold"><text>自助下单</text></view>
+					<view class="text-sm text-grey"><text>ORDER</text></view>
 				</view>
-				<view class="card-inside" @tap="entrust">
-					<uni-icons class="card-icon" custom-prefix="iconfont" type="icon-peixun" size="50" color="#2f7efd"></uni-icons>
-					<view class="card-content"> 
-						<view class="card-title"> 检测委托 </view>
-						<view class="card-desc"> ENTRUST </view>
-					</view>
+				<view class="function-grid-box" @tap="entrust">
+					<view class="text-xsl text-sunway-blue"><text class="cuIcon-edit"></text></view>
+					<view class="text-lg text-bold"><text>检测委托</text></view>
+					<view class="text-sm text-grey"><text>ENTRUST</text></view>
 				</view>
-				
-			</view>
-
-			<view class="button-row">
-				<view class="card-inside" @tap="selectProject">
-					<uni-icons class="card-icon" custom-prefix="iconfont" type="icon-sousuo" size="50" color="#2f7efd" ></uni-icons>
-					<view class="card-content"> 
-						<view class="card-title"> 任务查询 </view>
-						<view class="card-desc"> QUERY </view>
-					</view>
+				<view class="function-grid-box" @tap="selectProject">
+					<view class="text-xsl text-sunway-blue"><text class="cuIcon-searchlist"></text></view>
+					<view class="text-lg text-bold"><text>任务查询</text></view>
+					<view class="text-sm text-grey"><text>QUERY</text></view>
 				</view>
-				<view  class="card-inside" @tap="openComment">
-					<uni-icons class="card-icon" custom-prefix="iconfont" type="icon-shoucang" size="50" color="#2f7efd"></uni-icons>
-					<view class="card-content"> 
-						<view class="card-title"> 
-							客户评价
-							<view class="tab-tag" v-if="toCommentCue > 0" >
-								<block v-if="toCommentCue!=1">{{toCommentCue>99?'99+':toCommentCue}}</block>
-							</view>
-						 </view>
-						<view class="card-desc"> EVALUATE </view>
+				<view class="function-grid-box" @tap="openComment">
+					<view class="text-xsl text-sunway-blue"><text class="cuIcon-evaluate"></text></view>
+					<view class="text-lg text-bold"><text>客户评价</text></view>
+					<view class="text-sm text-grey"><text>EVALUATE</text></view>
+					<view class="tab-tag" v-if="toCommentCue > 0" >
+						<block v-if="toCommentCue!=1">{{toCommentCue>99?'99+':toCommentCue}}</block>
 					</view>
 				</view>
 			</view>
-			<button class="button-image bg-qhjc-blue"  @click="toggle('center')">
+			
+			<button class="button-image bg-sunway-blue"  @click="toggle('center')">
 				<view class="button-text1 text-df">
 					<text class="  text-white">关注公众号</text>
 				</view>
 				<view class="button-text2 text-df ">
-					<text class="text-white">了解秋毫更多信息</text>
+					<text class="text-white">了解中孚更多信息</text>
 				</view>
 				
 				<image mode="aspectFit"  src="../../static/image/qrCode.jpg"></image></button>
@@ -119,7 +106,7 @@
 			},
 			selectProject(e){
 			  wx.navigateTo({
-			    url: '../selectproject/selectproject?clientNo=' + getApp().globalData.clientList.clientNo,
+			    url: '../selectproject/selectproject?clientNo=' + getApp().globalData.userInfo.clientNo,
 			  })
 			},
 			entrust(e) {
@@ -135,7 +122,7 @@
 				// 	title : '请等候'
 				// })
 				// uni.request({
-				// 	url:  getApp().globalData.host + '/open/emc/projectfunction/module/bp/wechat/select-questionnaire-url',
+				// 	url:  getApp().globalData.host + '/open/emc/module/bp/wechat/select-questionnaire-url',
 				// 	method : getApp().globalData.method,
 				// 	success : (res) => {
 				// 		var data = res.data;
@@ -161,6 +148,6 @@
 	}
 </script>
 
-<style lang="scss">
-	@import url(../home/home.scss);
+<style>
+	@import url(../home/home.css);
 </style>

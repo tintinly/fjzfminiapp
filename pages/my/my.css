@@ -1,87 +1,31 @@
 /* pages/mypage/mypage.wxss */
+.gradual-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0%;
+	bottom: 0;
+	background: linear-gradient(to bottom, #4aa1ed ,#F4F4F4 50%);
+	z-index: -1;
 
-.nav-bar-top {
-		width: 100%;
-		position:fixed;
-		background-color: #3881ed;
-		border : 2px solid #3881ed;
-		top : 0px  /* 使fixed位置生效 */
-	}
-	
-	.nav-bar {
-		width: 100%;
-		position:fixed;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		/* border: 2px solid; */
-	}
-	
-	.nav-title {
-			position:absolute;
-			left: 50%;    /* 起始是在body中，横向距左50%的位置 */
-			transform:translate(-50%); /* 水平、垂直都居中,也可以写成下面的方式 */
-			text-align: center;
-	}
-
-	
-
-.bg-box {
-    width: 100%;
-    height: 625rpx;
-	position: relative;
-    z-index: 0;
-	  overflow: hidden;
-	/* background-image: url(/static/image/top1.jpg); */
-	/* -moz-background-size:100% 100%; background-size:100% 100%; */
 }
 
-.bg-box::after {
-  content: '';
-  width: 130%;
-  height: 600rpx;
-  position: absolute;
-  left: -15%;     //椭圆左边隐藏10%，右边隐藏10%
-  top: 0;
-  z-index: -1; // 解决遮挡
-  border-radius: 0 0 50% 50%;  //左上角，右上角，右下角，左下角
-  background: #3881ed;
-}
-
-
-.bg-box image{
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-}
-
-.head-box {
-    z-index: 9999;
-    height: 100px;
-    margin: 10rpx 18rpx;
-    border-radius: 16rpx;
-    background-color: #fff;
-    box-shadow: 10px 10px 5px rgba(39, 48, 57, 0.05);
-}
-
-.before-userAvatar {
-	position: absolute;
-	padding-top: 80rpx;
-	padding-left: 40rpx;
+.userInfo-box {
+	padding-bottom: 20rpx;
+	padding-left:  50rpx;
+	padding-right:  50rpx;
 	display: flex;
 	flex-direction: row;
-		/* border-style: solid; */
+	align-items: center;
+	justify-content: left;
+	/* border-style: solid; */
 }
 
-.userAvatar-box {
-    width: 100rpx;
-    height: 100rpx;
-	margin: auto;
-	/* border-radius: 50%; */
-	display: flex;
-	overflow:hidden;
-	text-align: center;
-		/* border-style: solid; */
+.userAvatar-box image {
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 50%;
+	/* border-style: solid; */
 }
 
 
@@ -99,20 +43,13 @@
 }
 
 .userNotice {
-	height: 100%;
-	margin-left: 310rpx;
-	align-self: center;
-	/* margin : 0 670rpx 0 60rpx; */
-	float: center;
-	justify-content: center;
-	/* border-style: solid; */
+	margin-left: auto;
+	margin-right: 0;
+	font-size: 60px;
 }
 
-.order-card {
-		margin-top: 280rpx;
-}
 
-.qhjc-image {
+.zfjc-image {
 	/* width: 200rpx; */
 	/* height: 200rpx; */
 	margin-left: 20rpx;

@@ -5,96 +5,12 @@
     box-shadow: 10rpx 10rpx 5rpx rgba(39, 48, 57, 0.05);
 }
 
-	
-.content-box {
-    margin: 15rpx 27rpx;
-    border-radius: 16rpx;
-    background-color: #ffffff;
-    box-shadow: 10rpx 10rpx 5rpx rgba(39, 48, 57, 0.05);
+
+
+switch {
+	transform: scale(0.8);
 }
 
-.content-title {
-    height: 35rpx;
-	 border-bottom: 4rpx #e2e2e2 solid;
-}
-
-.title-text {
-	font-size:13rpx;
-	line-height: 35rpx;
-	padding-left: 5rpx;
-	text-align: left;
-	font-weight: bold;
-}
-
-.content-row {
-    height: 45rpx;
-    border-bottom: 1rpx #f0f0f0 solid;
-	display: flex;
-	flex-direction: row;
-}
-
-.option-row {
-    height: 45rpx;
-    border-bottom: 1rpx #f0f0f0 solid;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-}
-
-
-.content-row2 {
-    height: 60rpx;
-    border-bottom: 1rpx #f0f0f0 solid;
-	display: flex;
-	flex-direction: row;
-}
-
-
-.content-text {
-	width: 60rpx;
-	font-size:13rpx;
-	line-height: 45rpx;
-	padding-left: 20rpx;
-	text-align: left;
-	font-weight: bold;
-}
-
-.content-text2 {
-	width: 130rpx;
-	font-size:13rpx;
-	line-height: 45rpx;
-	padding-left: 20rpx;
-	text-align: left;
-	font-weight: bold;
-}
-
-.content-input {
-	width: 240rpx;
-	padding-left: 10rpx;
-	padding-top: 11rpx;
-	font-size:13rpx;
-}
-
-.content-switch {
-	padding-left: 43rpx;
-	padding-top: 9rpx;
-	transform: scale(0.8,0.8)
-}
-
-.content-switch2 {
-	padding-right: 20rpx;
-	transform: scale(0.9,0.9)
-}
-
-.content-num {
-	width: 30rpx;
-	height: 30rpx;
-	font-size: 20rpx;
-	text-align: center;
-	border-radius: 50%;
-	background-color: cornflowerblue;
-}
 
 .content-num-before {
 	display: flex;
@@ -103,70 +19,10 @@
 	align-items: center;
 }
 
-.content-folder-or-order {
-	width: 260rpx;
-	font-size:13rpx;
-	line-height: 45rpx;
-	padding-left: 7rpx;
-	text-align: left;
-	font-weight: bold;
-
-}
-.folder-order-info{
-	width: 260rpx;
-	/* border-style: solid; */
-	/* border-width: 2rpx; */
-	display: flex;
-	flex-direction: column;
-}
-.mainInfo{
-	width: inherit;
-	height: 20rpx;
-	margin: 10rpx 0rpx 3rpx 10rpx;
-	text-align: left;
-	font-weight: bold;
-   overflow: hidden;
-   /* 超过了就显示省略号 */
-       text-overflow: ellipsis;
-      /* webkit内核的浏览器 */
-       display: -webkit-box;
-       -webkit-line-clamp: 1;
-       -webkit-box-orient: vertical;
-}
-.extInfo{
-	margin: 0rpx 0rpx 0rpx 10rpx;
-	width: inherit;
-	height: 20rpx;
-	text-align: left;
-	overflow: hidden;
-			display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
-			-webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
-			-webkit-line-clamp: 1; /** 显示的行数 **/
-}
 
 .button{
 	border-radius: 80rpx;
 	margin: 40rpx 50rpx;
 	font-size: 35rpx;
-	background-color: cornflowerblue;
 }
 
-.image-add {
-	width: 10rpx;
-	height: 10rpx;
-	padding-left: 11rpx;
-	padding-top: 17rpx;
-}
-
-.image-right {
-	width: 20rpx;
-	height: 20rpx;
-	padding-left: 33rpx;
-	padding-top: 17rpx;
-
-}
-
-.content-right {
-	padding-left: 35rpx;
-		padding-top: 23rpx;
-}
