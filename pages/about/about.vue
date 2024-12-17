@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<web-view src="https://mp.weixin.qq.com/s/s7h1lJcewyzhyovOLyp-Lw"></web-view>
+		<web-view :src="officialWebsite"></web-view>
 	</view>
 </template>
 
@@ -8,7 +8,7 @@
 	export default {
 		data() {
 			return {
-				
+				officialWebsite : getApp().globalData.officialWebsite
 			}
 		},
 		methods: {

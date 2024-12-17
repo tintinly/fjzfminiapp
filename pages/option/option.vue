@@ -22,25 +22,7 @@
 		},
 		methods: {
 			logout : function(e) {
-				uni.showLoading({
-					title: '正在退出'
-				});
-				getApp().globalData.openId = ''
-				getApp().globalData.phoneNumber = ''
-				getApp().globalData.userInfo = []
-				try {
-					uni.clearStorageSync();
-				} catch (e) {
-					// error
-				}
-				utils.IsLogon();
-				var UserLogin = getApp().globalData.UserLogin;
-				if(!UserLogin){
-					uni.hideLoading()
-					wx.reLaunch({
-					  url: '../login/login',
-					})
-				}
+				utils.logout();
 			},
 			cancelAcount : function(e)	{
 				uni.showModal({
@@ -62,7 +44,7 @@
 									console.log("cancelAcount", res)
 								
 									uni.clearStorageSync();					
-									utils.IsLogon();
+									utils.isLogin();
 									var UserLogin = getApp().globalData.UserLogin;
 									if(!UserLogin){
 										uni.hideLoading()

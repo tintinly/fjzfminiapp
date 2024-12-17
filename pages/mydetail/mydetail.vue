@@ -17,29 +17,25 @@
 				<view><input type="nickname" placeholder="请填写" v-model="myInfo.nickName"/></view>
 			</view>
 			<view class="info-line">
-				<view><text>姓名</text></view>
-				<view><input placeholder="请填写" v-model="myInfo.name"/></view>
-			</view>
-			<view class="info-line">
 				<view><text>手机号</text></view>
 				<view><text>{{myInfo.phoneNumber}}</text></view>
 			</view>
 			<view class="info-line">
 				<view><text>性别</text></view>
 				<view>
-			<!-- 		<radio-group @change="sexChange">
-						<radio class='blue basis-lg margin-lr-sm' :class="myInfo.sex==0?'checked':''" :checked="myInfo.sex==0?true:false" value=0></radio>
+			<!-- 		<radio-group @change="genderChange">
+						<radio class='blue basis-lg margin-lr-sm' :class="myInfo.gender==0?'checked':''" :checked="myInfo.gender==0?true:false" value=0></radio>
 						<text>男</text>
-						<radio class='blue basis-lg margin-lr-sm' :class="myInfo.sex==1?'checked':''" :checked="myInfo.sex==1?true:false" value=1></radio>
+						<radio class='blue basis-lg margin-lr-sm' :class="myInfo.gender==1?'checked':''" :checked="myInfo.gender==1?true:false" value=1></radio>
 						<text>女</text>
 					</radio-group> -->
-					<radio-group name="sex" @change="sexChange">
+					<radio-group name="gender" @change="genderChange">
 						<label for="man" >
-							<radio id="man" color="#4aa1ed" value=0 :checked="myInfo.sex==0?true:false" />
+							<radio id="man" color="#4aa1ed" value=0 :checked="myInfo.gender==0?true:false" />
 							<text>男</text>
 						</label>
 						<label for="woman" >
-							<radio id="woman" color="#4aa1ed" value=1 :checked="myInfo.sex==1?true:false" />
+							<radio id="woman" color="#4aa1ed" value=1 :checked="myInfo.gender==1?true:false" />
 							<text>女</text>
 						</label>
 					</radio-group>
@@ -55,6 +51,10 @@
 		
 		<view class="info-box">
 			<view class="info-title"><text class="text-bold text-lg">企业信息</text></view>
+			<view class="info-line">
+				<view><text>姓名</text></view>
+				<view><text>{{myInfo.name}}</text></view>
+			</view>
 			<view class="info-line">
 				<view><text>企业名称</text></view>
 				<view><text>{{myInfo.clientName}}</text></view>
@@ -93,14 +93,13 @@
 					avatarUrl : '../../static/icon/defaultAvatarBlack.jpg',
 					avatar : '',
 					nickName : '',
-					name : '',
 					phoneNumber : '',
-					sex : '',
+					gender : '',
 					birthday : '完善生日信息',
-					lxrMail : '',
-					clientNo : '',
-					clientName : '',
-					address : '',
+					name : '暂无',
+					clientNo : '暂无',
+					clientName : '暂无',
+					address : '暂无',
 				},
 			}
 		},
@@ -132,8 +131,8 @@
 			birthdayChange : function (e){
 				this.myInfo.birthday = e.detail.value
 			},
-			sexChange : function (e){
-				this.myInfo.sex = e.detail.value
+			genderChange : function (e){
+				this.myInfo.gender = e.detail.value
 			},
 			onChooseAvatar: function(e) {
 				this.myInfo.avatarUrl = e.detail.avatarUrl
@@ -184,7 +183,7 @@
 					this.myInfo.avatarUrl = getApp().globalData.host + uri
 					this.myInfo.avatar = uri
 					wx.request({
-						url: getApp().globalData.host + '/open/emc/module/bp/wechat/update-client',
+						url: getApp().globalData.host + '/open/emc/module/bp/wechat/update-user-info',
 						data: {
 							openId : getApp().globalData.openId,
 							userInfo : _this.myInfo,
@@ -231,7 +230,7 @@
 			loadData : function(options){
 				var _utils = utils;
 				wx.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-client-detail',
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/get-user-info',
 					data : {
 						openId : getApp().globalData.openId,
 						phoneNumber : getApp().globalData.phoneNumber
@@ -239,7 +238,7 @@
 					method : 'POST',
 					success : (clientData) =>{
 						wx.setStorageSync('userInfo', clientData.data);
-						// _utils.IsLogon();
+						// _utils.isLogin();
 						this.userInfo = clientData.data;
 						// 用户信息
 						if (this.userInfo.avatar != undefined && this.userInfo.avatar != '') {
@@ -247,16 +246,23 @@
 							this.myInfo.avatarUrl = getApp().globalData.host + this.userInfo.avatar;
 						}
 						if (this.userInfo.birthday != undefined && this.userInfo.birthday != '') {
-							var date = utils.dateUtils.parse(this.userInfo.birthday);
-							this.myInfo.birthday = utils.dateUtils.dateToStr(date);
+							this.myInfo.birthday = this.userInfo.birthday;
+						}
+						if (this.userInfo.name != undefined && this.userInfo.name != '') {
+							this.myInfo.name = this.userInfo.name;
+						}
+						if (this.userInfo.clientName != undefined && this.userInfo.clientName != '') {
+							this.myInfo.clientName = this.userInfo.clientName;
+						}
+						if (this.userInfo.address != undefined && this.userInfo.address != '') {
+							this.myInfo.address = this.userInfo.address;
 						}
 						this.myInfo.nickName = this.userInfo.nickName;
+						this.myInfo.phoneNumber = this.userInfo.phoneNumber;
+						this.myInfo.gender = this.userInfo.gender;
 						this.myInfo.name = this.userInfo.lxrName;
-						this.myInfo.phoneNumber = this.userInfo.lxrPhone;
-						this.myInfo.lxrMail = this.userInfo.lxrMail;
-						this.myInfo.sex = this.userInfo.sex;
-						this.myInfo.clientName = this.userInfo.clientName;
 						this.myInfo.clientNo = this.userInfo.clientNo;
+						this.myInfo.clientName = this.userInfo.clientName;
 						this.myInfo.address = this.userInfo.address;
 						uni.$emit('updateInfo',{
 							nickName : this.myInfo.nickName,
@@ -276,25 +282,7 @@
 				})
 			},
 			logout : function(e) {
-				uni.showLoading({
-					title: '正在退出'
-				});
-				getApp().globalData.openId = ''
-				getApp().globalData.phoneNumber = ''
-				getApp().globalData.userInfo = []
-				try {
-					uni.clearStorageSync();
-				} catch (e) {
-					// error
-				}
-				utils.IsLogon();
-				var UserLogin = getApp().globalData.UserLogin;
-				if(!UserLogin){
-					uni.hideLoading()
-					wx.reLaunch({
-					  url: '../login/login',
-					})
-				}
+				utils.logout();
 			},
 		}
 	}

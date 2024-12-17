@@ -39,7 +39,7 @@
 						<uni-easyinput disabled="true" v-model="personInfo.phoneNumber" placeholder="请输入联系方式" />
 					</uni-forms-item>
 					<uni-forms-item label="性别" >
-						<uni-data-checkbox v-model="personInfo.sex" :localdata="sexs" />
+						<uni-data-checkbox v-model="personInfo.gender" :localdata="sexs" />
 					</uni-forms-item>
 					<uni-forms-item label="生日">
 						<uni-datetime-picker type="date" v-model="personInfo.birthday" />
@@ -91,7 +91,7 @@
 					phoneNumber : '',
 					birthday : '',
 					mail : '',
-					sex : '',
+					gender : '',
 				},
 				//企业信息
 				companyInfo : {
@@ -101,7 +101,7 @@
 					mail : '',
 				},
 				// 性别选项
-				sexs: [{
+				genders: [{
 					text: '男',
 					value: 0
 				}, {
@@ -222,7 +222,7 @@
 							console.log('afterurl', url)
 							this.userInfo.avatar = url
 							wx.request({
-								url: getApp().globalData.host + '/open/emc/module/bp/wechat/update-client',
+								url: getApp().globalData.host + '/open/emc/module/bp/wechat/get-user-info',
 								data: {
 									openId : openId,
 									clientId : _this.userInfo == undefined ? '' : _this.userInfo.clientId,
@@ -261,7 +261,7 @@
 				var _utils = utils;
 				if(options == 'login'){
 					wx.request({
-						url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-client-detail',
+						url : getApp().globalData.host + '/open/emc/module/bp/wechat/get-user-info',
 						data : {
 							openId : getApp().globalData.openId,
 							phoneNumber : getApp().globalData.phoneNumber
@@ -269,7 +269,7 @@
 						method : 'POST',
 						success : (clientData) =>{
 							wx.setStorageSync('userInfo', clientData.data);
-							_utils.IsLogon();
+							_utils.isLogin();
 							uni.switchTab({
 								url: '../home/home',
 							})

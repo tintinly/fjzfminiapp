@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<sunway-navbar :backShow="false" :titleShow="false"></sunway-navbar>
+		<sunway-navbar :backShow="backShow" :titleShow="false"></sunway-navbar>
 		<view class="app-welcome">
 			<image src="../../static/image/loginpic.jpg"></image>
 			<view class="margin-left-lg">
@@ -20,7 +20,7 @@
 				<view class="margin-lr-sm"><text class=" text-sm text-gray " >其他登录方式</text></view>
 				<view class="solid" style="width: 70rpx; height: 1px;"></view>
 			</view>
-			<view class="login-way" @click="toPage('../emclogin/emclogin')">
+			<view class="login-way" @click="toPage('../limslogin/limslogin')">
 				<view class="margin-right-sm"><image src="../../static/image/gikam.svg"></image></view>
 				<view><text>环境监测业务管理系统</text></view>
 			</view>
@@ -34,15 +34,13 @@
 	export default {
 		data () {
 			return {
-				testvalue: ''
+				testvalue: '',
+				backShow : false
 			}
 		},
 		methods:{
 			onunload(e){
 				login.methods.onUnload(e)
-			},
-			login:function(){
-				login.methods.login()
 			},
 			getPhoneNumber(e){
 				login.methods.getPhoneNumber(e)
@@ -53,12 +51,15 @@
 				})
 			},
 			back : function(e) {
-			// 在C页面内 navigateBack，将返回A页面
+				// 在C页面内 navigateBack，将返回A页面
 				uni.navigateBack({
 					delta: 1
 				});
 			},
-		}
+		},
+		onLoad(e) {
+		  this.backShow = e.needBack && JSON.parse(e.needBack) ? true : false; 
+		},
 	}
 </script>
 

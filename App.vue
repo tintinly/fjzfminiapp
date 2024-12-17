@@ -1,14 +1,15 @@
 <script>
+	import utils from './common/util.js';
 	export default {
 		data() {
 			return {
 			};
 		},
 		globalData : {
-			// host : 'http://47.120.13.240:8089',
+			host : 'http://47.120.13.240:8089',
 			// host : 'http://localhost:8087',
 			// host : 'http://192.168.56.1:8087',
-			host : 'http://cn-qz-plc-1.ofalias.net:55134',
+			// host : 'http://cn-qz-plc-1.ofalias.net:55134',
 			method : 'POST',
 			UserLogin : false,
 			appId : 'wxa6b4df1015ec63f9',
@@ -18,7 +19,8 @@
 			folderList : [],
 			orderList : [],
 			mch_key : '',//商户密钥
-			
+			sessionKey : '',// 微信会话密钥
+			cookie : '', // sunway-remember-me-cookie
 			
 			// 不同机型页面信息
 			navHeight : '',// 整个导航栏的高度
@@ -37,6 +39,22 @@
 		},
 		onLaunch: function() {
 			console.log('App Launch')
+			// 初始化
+			wx.request({
+				url: this.globalData.host + '/open/emc/module/bp/wechat/app-init',
+				data: {
+				},
+				method : 'POST',
+				success: (appInitData) =>{
+					console.log("获取初始化参数",appInitData)
+					this.globalData.questionnaireUrl = appInitData.data.questionnaireUrl
+					this.globalData.officialWebsite = appInitData.data.officialWebsite
+				},
+				fail: appInitData=>{
+					console.log('获取初始化参数失败',appInitData);
+					
+				},
+			});
 			// 获取胶囊信息
 			let menuButtonObject = wx.getMenuButtonBoundingClientRect()
 			// 获取设备信息
@@ -95,6 +113,7 @@
 	 page {
 	   --sunway-primary-color:  #4aa1ed;
 	   --sunway-minor-color: #295290;
+	   --sunway-primary-background-color: #f6f6f6;
 	 }
 	 
 	/**文本**/

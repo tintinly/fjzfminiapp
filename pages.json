@@ -1,10 +1,10 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
+			"path" : "pages/judgelogin/judgelogin",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
 				"navigationStyle": "custom"
 			}
 		},
@@ -12,6 +12,14 @@
 			"path": "pages/home/home",
 			"style": {
 				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -229,11 +237,26 @@
             
         },
         {
-        	"path" : "pages/emclogin/emclogin",
+        	"path" : "pages/limslogin/limslogin", 
         	"style" : 
         	{
         		"navigationBarTitleText" : "",
 				"navigationStyle": "custom"
+        	}
+        },
+        {
+        	"path" : "pages/selecttodo/selecttodo",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "待办"
+        	}
+        },
+        {
+        	"path" : "pages/selectcontractaudit/selectcontractaudit",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "",
+        		"navigationStyle": "custom"
         	}
         }
     ],

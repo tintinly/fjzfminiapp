@@ -1,3 +1,6 @@
+/* ==================
+	        工具方法
+	==================== */
 function formatTime(time) {
 	if (typeof time !== 'number' || time < 0) {
 		return time
@@ -54,27 +57,6 @@ var dateUtils = {
 };
 
 
-function IsLogon(){
-	var phoneNumber = wx.getStorageSync('phoneNumber');
-	var openId = wx.getStorageSync('openId');
-	var userInfo = wx.getStorageSync('userInfo');
-	console.log("phoneNumber",phoneNumber);
-	console.log("openId",openId);
-	console.log("userInfo",userInfo);
-	// 获取缓存的登录信息
-	if (phoneNumber && openId && userInfo && userInfo.clientId) {
-		console.log("用户已登陆");
-		getApp().globalData.UserLogin = true;
-		getApp().globalData.openId = openId;
-		getApp().globalData.phoneNumber = phoneNumber;
-		getApp().globalData.userInfo = userInfo
-	}else{
-		getApp().globalData.UserLogin = false
-	}
-	
-};
-
-
 function ellipsisFileName(str, maxLength) {
 	const strLength = str.length
 	let data = []
@@ -87,10 +69,62 @@ function ellipsisFileName(str, maxLength) {
 	return data
 }; 
 
+/* ==================
+	        登录相关
+	 ==================== */
+function isLogin(){
+	var phoneNumber = wx.getStorageSync('phoneNumber');
+	var openId = wx.getStorageSync('openId');
+	var userInfo = wx.getStorageSync('userInfo');
+	var sessionKey = wx.getStorageSync('sessionKey');
+	var cookie = wx.getStorageSync('cookie');
+	// 获取缓存的登录信息
+	if (/* phoneNumber && */openId && userInfo) {
+		console.log("用户已登陆", userInfo);
+		getApp().globalData.UserLogin = true;
+		getApp().globalData.openId = openId;
+		getApp().globalData.phoneNumber = phoneNumber;
+		getApp().globalData.userInfo = userInfo
+		getApp().globalData.sessionKey = sessionKey
+		getApp().globalData.cookie = cookie
+	}else{
+		console.log("用户未登陆");
+		getApp().globalData.UserLogin = false
+	}
+	return getApp().globalData.UserLogin;
+};
+
+function  logout() {
+	uni.showLoading({
+		title: '正在登出'
+	});
+	getApp().globalData.openId = '';
+	getApp().globalData.userInfo = [];
+	getApp().globalData.sessionKey = '';
+	getApp().globalData.cookie = '';
+	try {
+		// uni.clearStorageSync();
+		uni.removeStorageSync("openId");
+		uni.removeStorageSync("userInfo");
+		uni.removeStorageSync("sessionKey");
+		uni.removeStorageSync("cookie");
+	} catch (e) {
+		// error
+	}
+	uni.hideLoading();
+	if(!this.isLogin()){
+		uni.redirectTo({
+			url: '../login/login',
+		});
+	}
+};
+
+
 export default{
 	formatTime,
 	formatLocation,
 	dateUtils,
-	IsLogon,
-	ellipsisFileName
+	isLogin,
+	ellipsisFileName,
+	logout
 }

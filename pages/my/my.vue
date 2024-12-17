@@ -3,16 +3,16 @@
 		<sunway-navbar title="个人中心" :titleShow="false" :backShow="false" :blankHold="false"></sunway-navbar>
 		
 		<view class="userInfo-box" :style="'padding-top:' + navHeight + 'px;'">
-			<view class="userAvatar-box"  @click="toPage('../mydetail/mydetail')">
+			<view class="userAvatar-box"  @click="toPage('../mydetail/mydetail', true)">
 				<image :src="myInfo.avatarUrl"></image>
 			</view>
-			<view class="userlogin"  @click="toPage('../mydetail/mydetail')">
+			<view class="userlogin"  @click="toPage('../mydetail/mydetail', true)">
 				<view class="margin-bottom-sm">
 					<text class="text-lg text-white  text-left">{{myInfo.nickName}}</text>
 				</view>
-				<view>
+				<!-- <view>
 					<text class="text-sm text-white text-left">{{myInfo.phoneNumber}}</text>
-				</view>
+				</view> -->
 			</view>
 			<view class="userNotice"  @click="toPage('../todo/todo')">
 				<view class="cuIcon-notice text-white "></view>
@@ -21,7 +21,8 @@
 		
 			
 		<view class="cu-list grid col-2  card-menu ">
-			<view class="cu-item" @click="toPage('../selectorder/selectorder')">
+			<!-- <view class="cu-item" @click="toPage('../selectorder/selectorder', true)"> -->
+			<view class="cu-item" @click="toPage('../todo/todo', true)">
 				<view class="cuIcon-cart text-sunway-blue" >
 					<view v-if="orderCue > 0" class="cu-tag badge" >
 						<block v-if="orderCue!=1">{{orderCue > 99 ? "99+" : orderCue}} </block>
@@ -29,7 +30,7 @@
 				</view>
 				<text>我的订单</text>
 			</view>
-			<view class="cu-item" @click="toPage('../selectentrust/selectentrust')">
+			<view class="cu-item" @click="toPage('../selectentrust/selectentrust', true)">
 				<view class="cuIcon-edit text-sunway-blue" >
 					<view v-if="entrustCue > 0" class="cu-tag badge" >
 						<block v-if="entrustCue!=1">{{entrustCue > 99 ? "99+" : entrustCue}} </block>
@@ -47,13 +48,13 @@
 		</view>
 		<view class="cu-list menu card-menu  margin-bottom-xl shadow-lg">
 			<view class="cu-item arrow" >
-				<view class="content" @click="toPage('../selectinvoice/selectinvoice?clientNo=' + clientNo)">
+				<view class="content" @click="toPage('../selectinvoice/selectinvoice?clientNo=' + clientNo, true)">
 					<text class="cuIcon-ticket text-sunway-blue"></text>
 					<text class="text-black">发票管理</text>
 				</view>
 			</view>
 			<view class="cu-item arrow" >
-				<view class="content" @click="toPage('../mydetail/mydetail')">
+				<view class="content" @click="toPage('../mydetail/mydetail', true)">
 					<text class="cuIcon-people text-sunway-blue"></text>
 					<text class="text-black">个人资料</text>
 				</view>
@@ -76,7 +77,7 @@
 					<text class="text-black">联系客服</text>
 				</view>
 			</view>
-			<view class="cu-item arrow" @click="toPage('../feedback/feedback')">
+			<view class="cu-item arrow" @click="toPage('../feedback/feedback', true)">
 				<view class="content">
 					<text class="cuIcon-comment text-sunway-blue"></text>
 					<text class="text-black">建议与反馈</text>
@@ -85,7 +86,7 @@
 		
 		</view>
 		<view class="cu-list menu card-menu  margin-bottom-xl shadow-lg">
-			<view class="cu-item arrow" @click="toPage('../option/option')">
+			<view class="cu-item arrow" @click="toPage('../option/option', true)">
 				<view class="content">
 					<text class="cuIcon-settingsfill text-sunway-blue"></text>
 					<text class="text-black">设置</text>
@@ -150,31 +151,34 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-			var UserLogin = getApp().globalData.UserLogin;
-			if(!UserLogin){
-				wx.navigateTo({
-					url: '../login/login',
-				})
-			}else{
-				// 用户信息
-				this.userInfo = getApp().globalData.userInfo
-				if (this.userInfo.avatar != undefined && this.userInfo.avatar != '') {
-					this.myInfo.avatarUrl = getApp().globalData.host + this.userInfo.avatar
-				}
-				if (this.userInfo.lxrPhone != undefined && this.userInfo.lxrPhone != '') {
-					this.myInfo.phoneNumber = this.userInfo.lxrPhone
-				}
-				if (this.userInfo.nickName != undefined && this.userInfo.nickName != '') {
-					this.myInfo.nickName = this.userInfo.nickName
-				}
-				this.myInfo.clientNo = this.userInfo.clientNo
-
-				this.UserLogin = true;
-		    }
 			uni.$on('updateAvatar',this.updateAvatar)
 			uni.$on('updateInfo',this.updateInfo)
 		},
 		onShow : function (e) {
+			// if(!utils.isLogin()){
+			// 	uni.navigateTo({
+			// 		url: '../login/login?needBack=true',
+			// 	});
+			// 	return;
+			// }
+			if(!utils.isLogin()){
+				this.myInfo.nickName = '点击 登录 / 注册'
+				return;
+			}
+			// 用户信息
+			this.userInfo = getApp().globalData.userInfo
+			if (this.userInfo.avatar != undefined && this.userInfo.avatar != '') {
+				this.myInfo.avatarUrl = getApp().globalData.host + this.userInfo.avatar
+			}
+			if (this.userInfo.lxrPhone != undefined && this.userInfo.lxrPhone != '') {
+				this.myInfo.phoneNumber = this.userInfo.lxrPhone
+			}
+			if (this.userInfo.nickName != undefined && this.userInfo.nickName != '') {
+				this.myInfo.nickName = this.userInfo.nickName
+			}
+			this.myInfo.clientNo = this.userInfo.clientNo
+			
+			
 			this.orderCue = getApp().globalData.redDotCue.orderCue
 			this.tab1Cue = getApp().globalData.redDotCue.tab1Cue;
 			if (Number(this.tab1Cue) > 0) {
@@ -190,8 +194,13 @@
 		},
 		methods:{
 			// 跳转函数
-			toPage: function (url) {
-				console.log(url)
+			toPage: function (url, needLogin = false) {
+				if(needLogin && !utils.isLogin()){
+					uni.navigateTo({
+						url: '../login/login?needBack=true',
+					});
+					return;
+				}
 				uni.navigateTo({
 					url: url
 				})

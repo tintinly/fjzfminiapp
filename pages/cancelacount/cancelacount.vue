@@ -38,7 +38,7 @@
 									console.log("cancelAcount", res)
 								
 									uni.clearStorageSync();					
-									utils.IsLogon();
+									utils.isLogin();
 									var UserLogin = getApp().globalData.UserLogin;
 									if(!UserLogin){
 										uni.hideLoading()

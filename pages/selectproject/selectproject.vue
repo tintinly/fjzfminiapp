@@ -39,7 +39,7 @@
 			wx.request({
 				url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-contract',
 				data : {
-					clientNo : options.clientNo
+					clientNo : getApp().globalData.userInfo.clientNo
 				},
 				method : getApp().globalData.method,
 				success : (projectList) => {
