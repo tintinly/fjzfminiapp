@@ -5,6 +5,7 @@
 			getPhoneNumber(e) {
 				var that = this;
 				var errMsg = e.detail.errMsg
+				console.log(errMsg);
 				if (errMsg.indexOf("fail") > -1) {
 					uni.showToast({
 						icon: 'none',

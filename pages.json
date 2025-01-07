@@ -258,6 +258,14 @@
         		"navigationBarTitleText" : "",
         		"navigationStyle": "custom"
         	}
+        },
+        {
+        	"path" : "pages/todoaudit/todoaudit",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "",
+				"navigationStyle": "custom"
+        	}
         }
     ],
 	"globalStyle": {

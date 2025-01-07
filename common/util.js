@@ -1,3 +1,6 @@
+import { HTTP } from './http.js'
+const rsajs = require('./utils/RSA.js');
+const md5js = require('./MD5.js');
 /* ==================
 	        工具方法
 	==================== */
@@ -94,10 +97,100 @@ function isLogin(){
 	return getApp().globalData.UserLogin;
 };
 
+function tryLimsLogin(){
+	if(!this.isLogin()){
+		uni.navigateTo({
+			url: '../login/login?needBack=true',
+		})
+		return;
+	}
+	return new Promise((resolve, reject) => {
+		try {
+		  var cookie = wx.getStorageSync('cookie')
+		  var username = wx.getStorageSync('username');
+		  var password = wx.getStorageSync('password');
+		  var openId = wx.getStorageSync('openId');
+		  var header = {};
+		  header['Cookie'] = cookie;
+		} catch (e) {
+			reject(e)
+		}
+		HTTP(`/open/emc/module/bp/wechat/check-lims-login`,{},header).then(res=>{
+			if (res.data) {
+				resolve(cookie)
+			} else {
+				if (username && password && username != '' && password != '') {
+					HTTP(`/open/security/public-key`,{},{}, 'get').then(res=>{
+						var publicKey = res.data;
+						var encodePwd = rsajs.encryptData(publicKey, password);
+						console.log(encodePwd);
+						HTTP(`/core/module/sys/login`,{
+							openId : openId,
+							id : username,
+							password : encodePwd
+						}, {
+							"SECURITY-RSA-KEY": publicKey,
+							"content-type": 'application/x-www-form-urlencoded'
+						}).then(res=>{
+							wx.setStorageSync('cookie', res.header['Set-Cookie']);
+							wx.setStorageSync('username', username); // 用户名缓存
+							wx.setStorageSync('password', password); // 密码缓存
+							var cookie = res.header['Set-Cookie'];
+							console.log(cookie);
+							var header = {};
+							header['Cookie'] = cookie;
+							resolve(cookie)
+						}).catch(err=>{
+							reject(err)
+						});
+					}).catch(err=>{
+						reject(err)
+					});
+				} else {
+					reject("err")
+				}
+			}
+		}).catch(err=>{
+			reject(err)
+		});
+	})
+};
+
+
 function  logout() {
 	uni.showLoading({
 		title: '正在登出'
 	});
+	
+	// 登出lims账号
+	try {
+	  var cookie = wx.getStorageSync('cookie')
+	  if (cookie && cookie != '') {
+		  var header = {};
+		  header['Cookie'] = cookie;
+		  wx.request({ // 登出上一次账号
+		  	url: getApp().globalData.host + '/core/module/sys/logout',
+		  	data: {
+		  		// openId : openIdData.data.openid,
+		  		// userId : username,
+		  		// phoneNumber: phoneNumber
+		  	},
+		  	header: header,
+		  	method : 'POST',
+		  	success: (logoutRes) =>{
+		  		console.log("登出信息",logoutRes)
+		  		uni.hideLoading();
+		  	},
+		  	fail: logoutRes=>{
+		  		console.log('登出失败',logoutRes);
+		  		uni.hideLoading();
+		  	},
+		  })
+	  }
+	} catch (e) {
+	}
+	
+	
 	getApp().globalData.openId = '';
 	getApp().globalData.userInfo = [];
 	getApp().globalData.sessionKey = '';
@@ -126,5 +219,6 @@ export default{
 	dateUtils,
 	isLogin,
 	ellipsisFileName,
-	logout
+	logout,
+	tryLimsLogin
 }

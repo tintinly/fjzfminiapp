@@ -43,8 +43,8 @@
 		
 		
 		
-		<view class="margin-left-sm margin-top-sm">
-			<image mode="widthFix" class="zfjc-image" src="/static/image/loginpic2.png"></image>
+		<view class="margin-left-sm margin-xs" >
+			<image mode="heightFix" class="zfjc-image" src="/static/image/loginpic3.png"></image>
 		</view>
 		<view class="cu-list menu card-menu  margin-bottom-xl shadow-lg">
 			<view class="cu-item arrow" >

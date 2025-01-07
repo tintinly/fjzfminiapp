@@ -3,7 +3,8 @@
         "appid" : "wxa6b4df1015ec63f9",
         "setting" : {
             "postcss" : true,
-            "minified" : true
+            "minified" : true,
+            "urlCheck" : false
         },
         "lazyCodeLoading" : "requiredComponents"
     },

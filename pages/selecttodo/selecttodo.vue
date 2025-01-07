@@ -9,7 +9,7 @@
 				<view class="panel-container">
 					<view class="panel">
 						<view class="panel-item-grid">
-							<view :title="item.modelName" class="panel-item" hover-class="panel-item-active" @click="toPage(`../selectcontractaudit/selectcontractaudit?jsonParam=${item.ext$.jsonparam}&modelName=${item.modelName}`)" v-for="item in todolist">
+							<view :title="item.modelName" class="panel-item" hover-class="panel-item-active" @click="toPage(`../todoaudit/todoaudit?todoConfigId=${item.ext$.todoconfigid}&modelName=${item.modelName}`)" v-for="item in todolist">
 								<span class="mark">{{item.qty}}</span>
 								<image mode="aspectFit" :src="iconUrl(item.ext$.todoiconurl)" class="img">
 								<p class="text">{{item.modelName}}</p>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+	const utils = require('../../common/util.js');
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
@@ -41,10 +43,15 @@
 			},
 		},
 		onLoad : function () {
-			// this.loadData();
+			var _this = this;
+			this.loadData();
+			uni.$on('updateTodo', function() {
+				console.log('触发了待办更新事件')
+				_this.loadData();
+			})
 		},
 		onShow: function () {
-			this.loadData();
+			// this.loadData();
 		},
 		methods: {
 			toPage: function (url, needLogin = false) {
@@ -60,28 +67,19 @@
 			},
 			loadData() {
 				var _this = this;
-				uni.showLoading({
-					title: '查询中...',
-				});
-				wx.request({
-					url: getApp().globalData.host + '/open/emc/module/bp/wechat/select-todo',
-					method : 'post',
-					data: {
-						loginType : 'wxmpsso',
-						openId : getApp().globalData.openId,
-					},
-					header:{
-						"content-type": 'application/x-www-form-urlencoded'
-					},
-					success: (todoRes) =>{
-						console.log("查询待办", todoRes);
-						_this.todolist = todoRes.data
-						uni.hideLoading();
-					},
-					fail: todoRes=>{
+				utils.default.tryLimsLogin().then(res=>{
+					console.log(res);
+					var header = {};
+					header['Cookie'] = res;
+					HTTP(`/open/emc/module/bp/wechat/select-todo`,{}, header).then(res=>{
+						_this.todolist = res.data
+					}).catch(err=>{
 						console.log('查询待办失败',todoRes);
-						uni.hideLoading();
-					}
+					});
+				}).catch(err=>{
+					uni.navigateTo({
+						url: '../limslogin/limslogin',
+					});
 				});
 			}
 		}

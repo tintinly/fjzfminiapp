@@ -1,17 +1,18 @@
 <script>
-	import utils from './common/util.js';
 	export default {
 		data() {
 			return {
 			};
 		},
 		globalData : {
-			host : 'http://47.120.13.240:8089',
+			// host : 'http://47.120.13.240:8089',
+			// host : 'http://lims.zfjcjs.com:8089',
 			// host : 'http://localhost:8087',
 			// host : 'http://192.168.56.1:8087',
-			// host : 'http://cn-qz-plc-1.ofalias.net:55134',
+			host : 'http://cn-qz-plc-1.ofalias.net:55134',
 			method : 'POST',
 			UserLogin : false,
+			// appId : 'wx9a921cc8d181e292',
 			appId : 'wxa6b4df1015ec63f9',
 			openId : '',
 			phoneNumber : '',

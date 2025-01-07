@@ -27,12 +27,15 @@
 
 
 .home-top {
-	width: 700rpx;
-	height: 350rpx;
-	margin: 20rpx 20rpx 20rpx 20rpx;
+	margin: 20rpx;
+	/* border-radius: 10px; */
+/* 	background-image: url('../../static/image/home-top.png'); 
+	background-size: 100%; */
+}
+
+.home-top-img {
+	width : 100%;
 	border-radius: 10px;
-	background-image: url('../../static/image/home-top.png'); 
-	background-size: 100%;
 }
 
 .tab {

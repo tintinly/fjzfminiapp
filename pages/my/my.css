@@ -50,10 +50,8 @@
 
 
 .zfjc-image {
-	/* width: 200rpx; */
-	/* height: 200rpx; */
+	height: 60rpx;
 	margin-left: 20rpx;
-	max-width: 400rpx;
 }
 
 .content-box {

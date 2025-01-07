@@ -3,12 +3,14 @@
 	<view>
 		<view class="background">
 				<!-- <button class="home-top"></button> -->
-			<view class="home-top"  ></view>
+			<view class="home-top" >
+				<image mode="widthFix" class="home-top-img" src="/static/image/home-top.png"></image>
+			</view>
 			<view class="function-grid">
 				<!-- <view class="function-grid-box" @tap="toPage('../placeorder/placeorder', true)">
 					<view class="text-xsl text-sunway-blue "><text class="cuIcon-cart"></text></view>
 					<view class="text-lg text-bold"><text>自助下单</text></view>
-					<view class="text-sm text-grey"><text>ORDER</text></view>
+					<view class="text-sm text-grey"><text>ORDER</text></view> 
 				</view> -->
 				<view class="function-grid-box" @tap="toPage('../entrust/entrust', true)">
 					<view class="text-xsl text-sunway-blue"><text class="cuIcon-edit"></text></view>
@@ -65,7 +67,6 @@
 		},
 		onLoad() {
 			var that = this;
-			this.todoShow =  getApp().globalData.userInfo.userId != undefined;
 			uni.$on('toCommentCue', function(toCommentCue) {
 				console.log('触发了提示更新事件')
 				console.log(toCommentCue)
@@ -79,6 +80,7 @@
 			// 	})
 			// 	return;
 			// }
+			this.todoShow =  getApp().globalData.userInfo.userId != undefined;
 			this.toCommentCue = getApp().globalData.redDotCue.toCommentCue
 			this.tab1Cue = getApp().globalData.redDotCue.tab1Cue;
 			if (Number(this.tab1Cue) > 0) {

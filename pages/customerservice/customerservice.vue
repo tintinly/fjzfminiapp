@@ -5,6 +5,7 @@
 			<text>{{contact}}</text><text style="color: blue;"  @tap="callPhone" >{{phoneNumber}}</text><text>\n</text>
 			<text>{{email}}\n</text>
 			<text>{{address}}\n</text>
+			<text>{{workTime}}\n</text>
 		</view>
 	
 		<button  class="button bt-sunway-blue" open-type='contact'><text class="text-white">客服会话</text></button>
@@ -24,9 +25,11 @@
 		data() {
 			return {
 				company : '福建省中孚检测技术有限公司',
-				contact : '联系电话：', phoneNumber : 'xxxx-xxxxxxxx',
-				email : '公司邮箱：654497433@qq.com',
-				address : '公司地址：福建省漳州市龙文蓝田开发区檀林路42号'
+				contact : '联系电话：', 
+				phoneNumber : '0596-2303116',
+				email : '公司邮箱：hrzfjc@163.com',
+				address : '公司地址：福建省漳州市龙文区蓝田经济开发区檀林路42号',
+				workTime : '办公时间：周一到周六，早上9:00到下午6:00'
 			}
 		},
 		methods: {
@@ -38,7 +41,7 @@
 				});
 			},
 			copy(e) {
-				var copyContent = this.company + '\n'+ this.contact + this.phoneNumber + '\n' + this.email + '\n' + this.address;
+				var copyContent = this.company + '\n'+ this.contact + this.phoneNumber + '\n' + this.email + '\n' + this.address + '\n' + this.workTime;
 				console.log(copyContent)
 			
 				uni.setClipboardData({
