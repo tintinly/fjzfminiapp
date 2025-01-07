@@ -112,7 +112,7 @@
 				clientNo : getApp().globalData.userInfo.clientNo,
 				//用户信息
 				myInfo : {
-					avatarUrl : '../../static/icon/defaultAvatarBlack.jpg',
+					avatarUrl : '../../static/icon/defaultAvatar.jpg',
 					nickName : '微信用户'
 				},
 				// 提示信息

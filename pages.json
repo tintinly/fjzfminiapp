@@ -84,14 +84,6 @@
 		//         "navigationBarTitleText": "文章"
 		//     }
 		// }
-	    ,{
-            "path" : "pages/logon/logon",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "注册"
-            }
-            
-        }
         ,{
             "path" : "pages/entrust/entrust",
             "style" :                                                                                    
@@ -249,14 +241,6 @@
         	"style" : 
         	{
         		"navigationBarTitleText" : "待办"
-        	}
-        },
-        {
-        	"path" : "pages/selectcontractaudit/selectcontractaudit",
-        	"style" : 
-        	{
-        		"navigationBarTitleText" : "",
-        		"navigationStyle": "custom"
         	}
         },
         {

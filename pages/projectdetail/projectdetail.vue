@@ -174,7 +174,6 @@
 	export default {
 		data() {
 			return {
-				noDataBackgroud : '../../static/noData.png',
 				lineIndex : 1,
 				tabIndex : 1,
 				project : {

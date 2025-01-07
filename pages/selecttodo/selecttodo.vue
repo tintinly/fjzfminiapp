@@ -36,7 +36,7 @@
 			iconUrl(e) {
 			  return (e) => {
 				if (!e) {
-					return '../../static/icon/defaultTodoIcon.png'
+					return '../../static/icon/defaultTodoIcon.jpg'
 				}
 				return getApp().globalData.host + e;
 			  };

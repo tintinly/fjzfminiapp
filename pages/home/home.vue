@@ -4,7 +4,7 @@
 		<view class="background">
 				<!-- <button class="home-top"></button> -->
 			<view class="home-top" >
-				<image mode="widthFix" class="home-top-img" src="/static/image/home-top.png"></image>
+				<image mode="widthFix" class="home-top-img" src="/static/image/home-top.jpg"></image>
 			</view>
 			<view class="function-grid">
 				<!-- <view class="function-grid-box" @tap="toPage('../placeorder/placeorder', true)">

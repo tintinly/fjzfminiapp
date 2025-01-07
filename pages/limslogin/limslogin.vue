@@ -3,7 +3,7 @@
 		<sunway-navbar title="实验室信息管理系统"></sunway-navbar>
 		<view class="login-box">
 			<view class="login-img-box">
-				<image mode="widthFix" src="../../static/image/sunway-logo.png"></image>
+				<image mode="widthFix" src="../../static/image/sunway-logo.jpg"></image>
 			</view>
 			<view class="login-error" :style="{ visibility: errorMessage ? 'visible' : 'hidden' }"><text class="cuIcon-info margin-right-xs"></text><text>{{errorMessage}}</text></view>
 			<view class="login-input-box">

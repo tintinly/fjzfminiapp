@@ -18,7 +18,8 @@
 			</view>
 			<view class="info-line">
 				<view><text>手机号</text></view>
-				<view><text>{{myInfo.phoneNumber}}</text></view>
+				<!-- <view><text>{{myInfo.phoneNumber}}</text></view> -->
+				<view><input placeholder="请填写" v-model="myInfo.phoneNumber"/></view>
 			</view>
 			<view class="info-line">
 				<view><text>性别</text></view>
@@ -90,7 +91,7 @@
 			return {
 				userInfo : {},
 				myInfo : {
-					avatarUrl : '../../static/icon/defaultAvatarBlack.jpg',
+					avatarUrl : '../../static/icon/defaultAvatar.jpg',
 					avatar : '',
 					nickName : '',
 					phoneNumber : '',

@@ -82,8 +82,10 @@ export default {
 													})
 												}else {
 													utils.default.isLogin();
-													uni.navigateTo({
-														url: '../logon/logon',
+													uni.showToast({
+														duration:1500,
+														title: '登录失败',
+														icon : 'error'
 													})
 												}
 												uni.hideLoading();
