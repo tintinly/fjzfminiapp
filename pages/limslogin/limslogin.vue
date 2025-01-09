@@ -21,7 +21,7 @@
 				</view>
 			</view>
 			
-			<button class="button"  @click="limslogin"><text class="text-white">登录</text></button>
+			<button class="button bt-sunway-blue"  @click="limslogin"><text class="text-white">登录</text></button>
 			
 		</view>
 	</view>
