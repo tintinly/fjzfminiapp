@@ -1,5 +1,5 @@
 import { HTTP } from '../../common/http.js'
-const utils = require('../../common/util.js');
+import utils from '../../common/util.js'
 export default {
 	methods: {
 		
@@ -75,13 +75,13 @@ export default {
 												if(userInfo.openId != undefined){
 													wx.setStorageSync('userInfo', userInfo);
 													console.log("用户信息",userInfo);
-													utils.default.isLogin();
+													utils.isLogin();
 													that.selectRedDotCue();
 													uni.switchTab({
 														url: '../home/home',
 													})
 												}else {
-													utils.default.isLogin();
+													utils.isLogin();
 													uni.showToast({
 														duration:1500,
 														title: '登录失败',
@@ -183,9 +183,9 @@ export default {
 											wx.setStorageSync('phoneNumber', userInfo.lxrPhone);
 											wx.setStorageSync('sessionKey', sessionKey);
 											console.log("用户信息",userInfo);
-											utils.default.isLogin();
+											utils.isLogin();
 										}else {
-											utils.default.isLogin();
+											utils.isLogin();
 											wx.navigateTo({
 												url: '../login/login',
 											})

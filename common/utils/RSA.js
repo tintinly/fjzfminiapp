@@ -23,7 +23,7 @@ function decryptData(privateKey,data){
 
 
 
-export {
+export default {
 	encryptData,
 	decryptData
 }

@@ -58,7 +58,7 @@
 </template>
 
 <script>
-	const utils = require('../../common/util.js');
+	import utils from '../../common/util.js';
 	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
@@ -67,6 +67,7 @@
 				modelName : '',
 				tableName : '',
 				serviceName : '',
+				lcdpServiceName : '',
 				todoItemList : [],
 				todoItemList2 : [],
 				checkedTodoItemIdList : [],
@@ -88,7 +89,7 @@
 		},
 		methods: {
 			loadData() {
-				utils.default.tryLimsLogin().then(res=>{
+				utils.tryLimsLogin().then(res=>{
 					console.log(res);
 					var header = {};
 					header['Cookie'] = res;
@@ -100,6 +101,7 @@
 							this.todoItemList2 = []
 							this.tableName = ''
 							this.serviceName = ''
+							this.lcdpServiceName = ''
 							this.noData = true
 							wx.showToast({
 								title: '未查到相关信息',
@@ -112,6 +114,7 @@
 							this.todoItemList2 = res.data.todoItemList2
 							this.tableName = res.data.tableName
 							this.serviceName = res.data.serviceName
+							this.lcdpServiceName = res.data.lcdpServiceName
 						}
 					}).catch(err=>{
 					});
@@ -165,11 +168,12 @@
 					content: '微信已阅',
 					success: (res)=> {
 						if (res.confirm) {
-							utils.default.tryLimsLogin().then(res=>{
+							utils.tryLimsLogin().then(res=>{
 								var header = {};
 								header['Cookie'] = res;
 								HTTP(`/open/emc/module/bp/wechat/complete-todo-item`,{
 									  serviceName: this.serviceName,
+									  lcdpServiceName: this.lcdpServiceName,
 									  comment: "微信已阅",
 									  todoItems: auditData
 								}, header).then(res=>{
@@ -197,7 +201,7 @@
 						id : e
 					})
 				})
-				utils.default.tryLimsLogin().then(res=>{
+				utils.tryLimsLogin().then(res=>{
 					var header = {};
 					header['Cookie'] = res;
 					HTTP(`/secure/core/module/sys/bpmn-exts/options/rejectable-tasks`,{
@@ -238,11 +242,12 @@
 						id : e
 					})
 				})
-				utils.default.tryLimsLogin().then(res=>{
+				utils.tryLimsLogin().then(res=>{
 					var header = {};
 					header['Cookie'] = res;
 					HTTP(`/open/emc/module/bp/wechat/reject-todo-item`,{
 					  serviceName: this.serviceName,
+					  lcdpServiceName: this.lcdpServiceName,
 					  comment: "微信已阅",
 					  todoItems: auditData,
 					  targetStatusCode : this.targetStatusCode

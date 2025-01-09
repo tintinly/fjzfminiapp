@@ -1,6 +1,6 @@
-const utils = require('../../common/util.js');
-const rsajs = require('../../common/utils/RSA.js');
-const md5js = require('../../common/MD5.js');
+import utils from '../../common/util.js';
+import rsajs from '../../common/utils/RSA.js';
+import md5js from '../../common/MD5.js';
 export default {
 	methods: {
 		limsLogin(username, password) {
@@ -90,7 +90,7 @@ export default {
 													// 	var header = {};
 													// 	header[key] = value;
 													// 	header['sunway-remember-me'] = value;
-													// 	header['user'] = md5js.default.hex_md5(username);
+													// 	header['user'] = md5js.hex_md5(username);
 													// 	console.log(header);
 													// }
 													var header = {};
@@ -142,12 +142,12 @@ export default {
 																wx.setStorageSync('userInfo', userInfo);
 																console.log("用户信息",userInfo);
 																// that.selectRedDotCue();
-																utils.default.isLogin();
+																utils.isLogin();
 																uni.switchTab({
 																	url: '../home/home',
 																})
 															}else {
-																utils.default.isLogin();
+																utils.isLogin();
 																uni.showToast({
 																	duration:1500,
 																	title: '登录失败',

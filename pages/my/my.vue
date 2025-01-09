@@ -152,7 +152,7 @@
 		 */
 		onLoad: function (options) {
 			uni.$on('updateAvatar',this.updateAvatar)
-			uni.$on('updateInfo',this.updateInfo)
+			uni.$on('updateUserInfo',this.updateUserInfo)
 		},
 		onShow : function (e) {
 			// if(!utils.isLogin()){
@@ -209,7 +209,7 @@
 				console.log('触发了更新头像事件')
 				this.myInfo.avatarUrl = e.avatarUrl
 			},
-			updateInfo : function (e)	 {
+			updateUserInfo : function (e)	 {
 				console.log('触发了信息事件',e)
 				this.myInfo.nickName = e.nickName
 				this.myInfo.phoneNumber = e.phoneNumber

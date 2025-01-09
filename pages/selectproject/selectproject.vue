@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view v-if="warning" class="topTip">
+			<text class="cuIcon-warn text-yellow margin-right-sm"></text><text class="">未找到所属企业，请前往<text class="text-blue" @click="toPage('../mydetail/mydetail', true)">个人信息</text>中维护</text>
+		</view>
 		<sunway-empty-data v-if="noData" imgSrc="/static/image/cue/empty.svg"></sunway-empty-data>
 		<view class="margin bg-white box-radius" v-for="item in projectList"  @tap="toPage('../projectdetail/projectdetail?projId=' + item.projId)">
 			<view class="flex flex-wrap padding-xs  solid-bottom align-center radius">
@@ -27,67 +30,20 @@
 			return {
 				noData : true,
 				projectList : [],
+				clientContactId : getApp().globalData.userInfo.clientContactId,
 			}
+		},
+		computed : {
+			warning(e) {
+				return this.clientContactId == undefined || this.clientContactId == '';
+			},
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-			wx.showLoading({
-				title : '查询中'
-			})
-			wx.request({
-				url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-contract',
-				data : {
-					clientNo : getApp().globalData.userInfo.clientNo
-				},
-				method : getApp().globalData.method,
-				success : (projectList) => {
-					if(projectList.statusCode != 200){
-						this.projectList = []
-						this.noData = true
-						wx.showToast({
-							title: '网络错误',
-							icon: 'none',
-							duration: 1500
-						});
-					}else if(projectList.data.length == 0){
-						this.projectList = []
-						this.noData = true
-						wx.showToast({
-							title: '未查到相关信息',
-							icon: 'none',
-							duration: 1500
-						});
-					}else{
-						var dataList = projectList.data;
-						console.log('dataList',dataList)
-						var projectList = [];
-						for(var i = 0 ; i < dataList.length ; i++){
-							projectList[projectList.length] = {
-								projId : dataList[i].projId,
-								projName : dataList[i].projName,
-								projNode : dataList[i].projNode,
-								projNo : dataList[i].projNo !== undefined ?  dataList[i].projNo : '无',
-								createdTime : dataList[i].createdTime,
-								fileList : dataList[i].projFile
-							}
-						}
-						this.projectList = projectList;
-						this.noData = false
-					    wx.hideLoading()
-					}
-				},
-				fail : (res) =>{
-					console.log(res)
-					uni.hideLoading()
-					uni.showToast({
-						title: '网络错误',
-						icon: 'error',
-						duration: 1500
-					})
-				}
-			})
+			uni.$on('updateUserInfo',this.updateUserInfo)
+			this.loadData();
 		},
 		// onPullDownRefresh () {
 		// 	    console.log('触发下拉刷新了')
@@ -98,6 +54,12 @@
 					url : url 
 				})
 			},
+			updateUserInfo : function(e) {
+				this.clientContactId = e.clientContactId
+				if (this.clientContactId != undefined && this.clientContactId != '') {
+					this.loadData();
+				}
+			},
 			viewReport : function(e){
 				wx.request({
 					url:  getApp().globalData.host + '/open/emc/module/bp/wechat/select-report',
@@ -106,7 +68,6 @@
 					},
 					method : getApp().globalData.method,
 					success : (fileData) => {
-									console.log(fileData);
 						if(fileData.data != ''){
 							this.downloadFile(fileData.data[0].downloadUrl);
 						}else{
@@ -145,6 +106,64 @@
 			    }
 			  });
 			},
+			
+			loadData : function(e) {
+				wx.showLoading({
+					title : '查询中'
+				})
+				wx.request({
+					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-contract',
+					data : {
+						clientNo : getApp().globalData.userInfo.clientNo
+					},
+					method : getApp().globalData.method,
+					success : (projectList) => {
+						if(projectList.statusCode != 200){
+							this.projectList = []
+							this.noData = true
+							wx.showToast({
+								title: '网络错误',
+								icon: 'none',
+								duration: 1500
+							});
+						}else if(projectList.data.length == 0){
+							this.projectList = []
+							this.noData = true
+							wx.showToast({
+								title: '未查到相关信息',
+								icon: 'none',
+								duration: 1500
+							});
+						}else{
+							var dataList = projectList.data;
+							console.log('dataList',dataList)
+							var projectList = [];
+							for(var i = 0 ; i < dataList.length ; i++){
+								projectList[projectList.length] = {
+									projId : dataList[i].projId,
+									projName : dataList[i].projName,
+									projNode : dataList[i].projNode,
+									projNo : dataList[i].projNo !== undefined ?  dataList[i].projNo : '无',
+									createdTime : dataList[i].createdTime,
+									fileList : dataList[i].projFile
+								}
+							}
+							this.projectList = projectList;
+							this.noData = false
+						    wx.hideLoading()
+						}
+					},
+					fail : (res) =>{
+						console.log(res)
+						uni.hideLoading()
+						uni.showToast({
+							title: '网络错误',
+							icon: 'error',
+							duration: 1500
+						})
+					}
+				})
+			}
 		},
 	}
 </script>

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-	const utils = require('../../common/util.js');
+	import utils from '../../common/util.js';
 	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
@@ -67,14 +67,13 @@
 			},
 			loadData() {
 				var _this = this;
-				utils.default.tryLimsLogin().then(res=>{
+				utils.tryLimsLogin().then(res=>{
 					console.log(res);
 					var header = {};
 					header['Cookie'] = res;
 					HTTP(`/open/emc/module/bp/wechat/select-todo`,{}, header).then(res=>{
 						_this.todolist = res.data
 					}).catch(err=>{
-						console.log('查询待办失败',todoRes);
 					});
 				}).catch(err=>{
 					uni.navigateTo({

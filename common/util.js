@@ -1,6 +1,6 @@
 import { HTTP } from './http.js'
-const rsajs = require('./utils/RSA.js');
-const md5js = require('./MD5.js');
+import rsajs from './utils/RSA.js';
+import md5js from './MD5.js';
 /* ==================
 	        工具方法
 	==================== */
@@ -157,39 +157,27 @@ function tryLimsLogin(){
 };
 
 
-function  logout() {
-	uni.showLoading({
-		title: '正在登出'
-	});
-	
-	// 登出lims账号
+function limsLogout() {
+	// 登出上一次lims账号
 	try {
 	  var cookie = wx.getStorageSync('cookie')
 	  if (cookie && cookie != '') {
 		  var header = {};
 		  header['Cookie'] = cookie;
-		  wx.request({ // 登出上一次账号
-		  	url: getApp().globalData.host + '/core/module/sys/logout',
-		  	data: {
-		  		// openId : openIdData.data.openid,
-		  		// userId : username,
-		  		// phoneNumber: phoneNumber
-		  	},
-		  	header: header,
-		  	method : 'POST',
-		  	success: (logoutRes) =>{
-		  		console.log("登出信息",logoutRes)
-		  		uni.hideLoading();
-		  	},
-		  	fail: logoutRes=>{
-		  		console.log('登出失败',logoutRes);
-		  		uni.hideLoading();
-		  	},
-		  })
+		  HTTP(`/core/module/sys/logout`,{}, header).then(res=>{
+		  }).catch(err=>{
+		  });
 	  }
 	} catch (e) {
 	}
+}
+
+function  logout() {
+	uni.showLoading({
+		title: '正在登出'
+	});
 	
+	this.limsLogout()
 	
 	getApp().globalData.openId = '';
 	getApp().globalData.userInfo = [];
@@ -220,5 +208,6 @@ export default{
 	isLogin,
 	ellipsisFileName,
 	logout,
+	limsLogout,
 	tryLimsLogin
 }

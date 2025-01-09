@@ -114,13 +114,7 @@
 		 * 生命周期函数--监听页面卸载
 		 */
 		onUnload(){
-			var ss = getApp().globalData.userInfo;
-			if(getApp().globalData.userInfo == {}){
-				return;
-			}
-			wx.switchTab({
-				url: '../my/my',
-			});
+			
 		},
 		methods:{
 			back : function(e) {
@@ -239,7 +233,7 @@
 					method : 'POST',
 					success : (clientData) =>{
 						wx.setStorageSync('userInfo', clientData.data);
-						// _utils.isLogin();
+						getApp().globalData.userInfo = clientData.data;
 						this.userInfo = clientData.data;
 						// 用户信息
 						if (this.userInfo.avatar != undefined && this.userInfo.avatar != '') {
@@ -265,10 +259,7 @@
 						this.myInfo.clientNo = this.userInfo.clientNo;
 						this.myInfo.clientName = this.userInfo.clientName;
 						this.myInfo.address = this.userInfo.address;
-						uni.$emit('updateInfo',{
-							nickName : this.myInfo.nickName,
-							phoneNumber : this.myInfo.phoneNumber
-						})
+						uni.$emit('updateUserInfo', this.userInfo)
 					},
 					fail : clientData=>{
 						wx.switchTab({

@@ -1,5 +1,8 @@
 <template>
 	<view >
+		<view v-if="warning" class="topTip">
+			<text class="cuIcon-warn text-yellow margin-right-sm"></text><text class="">未找到所属企业，请前往<text class="text-blue" @click="toPage('../mydetail/mydetail', true)">个人信息</text>中维护</text>
+		</view>
 		<view class="content-box ">
 			<view class="content-row solid-bottom">
 				<view class="title-bar bg-white  ">
@@ -51,21 +54,43 @@
 </template>
 
 <script>
+	import utils from '../../common/util.js';
 	export default {
 		data() {
 			return {
 				imgList: [],
 				entrustContent : '',
-				wordCount : 0
+				wordCount : 0,
+				clientContactId : getApp().globalData.userInfo.clientContactId,
 			}
+		},
+		computed : {
+			warning(e) {
+				return this.clientContactId == undefined || this.clientContactId == '';
+			},
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad(options){
+			uni.$on('updateUserInfo',this.updateUserInfo)
 			this.loadData();
 		},
 		methods: {
+			toPage: function (url, needLogin = false) {
+				if(needLogin && !utils.isLogin()){
+					uni.navigateTo({
+						url: '../login/login?needBack=true',
+					});
+					return;
+				}
+				uni.navigateTo({
+					url: url
+				})
+			},
+			updateUserInfo : function(e) {
+				this.clientContactId = e.clientContactId
+			},
 			spyInput:function(e){
 				console.log(e)
 			   this.wordCount = e.detail.cursor
@@ -208,12 +233,19 @@
 				})
 			},
 			validateForm : function(e) {
-				console.log('this.entrustContent',this.entrustContent)
-				console.log('this.imgList',this.imgList)
-				if (this.entrustContent == '' && this.imgList.length === 0) {
+				var clientContactId = getApp().globalData.userInfo.clientContactId;
+				if (clientContactId == undefined || clientContactId == '') {
+					uni.showToast({
+						title: '未找到您所属的企业',
+						duration: 1500,
+						icon : 'none'
+					});
+					return false
+				} else if (this.entrustContent == '' && this.imgList.length === 0) {
 					uni.showToast({
 						title: '请上传照片或输入委托内容',
 						duration: 1500,
+						icon : 'none'
 					});
 					return false
 				} else {
