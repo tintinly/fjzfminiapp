@@ -1,0 +1,40 @@
+.box-radius {
+	border-radius: 16rpx;
+	box-shadow: 10rpx 10rpx 5rpx rgba(39, 48, 57, 0.05);
+}
+
+
+.tab-tag {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+}
+
+.box-head {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between; ;
+	align-items: center;
+	padding: 3px 27rpx;
+}
+
+.box-radius {
+    border-radius: 16rpx;
+    box-shadow: 10rpx 10rpx 5rpx rgba(39, 48, 57, 0.05);
+}
+
+.title-text-right-text {
+	color: #497e7e;
+	background-color: #d9f8fa;
+}
+
+.content-image {
+	padding: 10px 20px;
+	align-items: center;
+}
+
+.content-text{
+	padding: 10px 20px;
+	align-items: center;
+}

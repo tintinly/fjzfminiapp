@@ -1,0 +1,59 @@
+.topTip {
+	margin: 15rpx 27rpx;
+	padding : 15rpx;
+	background-color: #ffffff;
+	box-shadow: 10px 10px 5px rgba(39, 48, 57, 0.05);
+}
+.box-radius {
+	border-radius: 16rpx;
+	box-shadow: 10rpx 10rpx 5rpx rgba(39, 48, 57, 0.05);
+}
+.bg-img {
+	position: absolute;
+	width: 300rpx;
+	top: 50%;
+		left:50%;
+		transform: translate(-50%,-50%);
+}
+.content-box {
+	margin: 15rpx 27rpx;
+	border-radius: 16rpx;
+	background-color: #ffffff;
+	box-shadow: 10px 10px 5px rgba(39, 48, 57, 0.05);
+}
+.content-title {
+	display: flex;
+	padding: 10px 10px;
+	align-items: center;
+	/* border-radius: 16rpx; */
+	/* min-height: 70upx; */
+	justify-content: space-between; 
+	border-bottom: 1upx solid rgba(0, 0, 0, 0.1);
+}
+
+.content-bar {
+	display: flex;
+	align-items: center;
+	padding: 10px 10px;
+}
+
+.title-left {
+	display: flex;
+	align-items: center;
+}
+
+.image-left {
+	width: 50px;
+	height: 50px;
+}
+.thumb-image {
+	width: 100rpx;
+	height: 100rpx;
+}
+
+.text-box {
+	overflow: hidden;
+	display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+	-webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+	-webkit-line-clamp: 3; /** 显示的行数 **/
+}
