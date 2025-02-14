@@ -102,6 +102,7 @@
 </template>
 
 <script>
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
@@ -139,38 +140,19 @@
 				});
 			},
 			selectInvoiceDetail: function(invoiceId) {
-				uni.showLoading({
-					title: '查询中...',
-				})
-				uni.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-invoice-detail',
-					data : {
-						invoiceId : invoiceId,
-					},
-					method : getApp().globalData.method,
-					success : (res) => {
-						console.log(res)
-						var invoice = res.data.invoice;
-						this.invoice = invoice;
-						var contract = res.data.contract;
-						this.contract = contract;
-						var wxOrders = res.data.wxOrders;
-						if (wxOrders != undefined && wxOrders.length > 0) {
-							this.wxOrderId = wxOrders[0].id;
-						}
-					
-						uni.hideLoading()
-					},
-					fail : (res) =>{
-						console.log(res)
-						uni.hideLoading()
-						uni.showToast({
-							title: '网络错误',
-							icon: 'error',
-							duration: 1500
-						})
+				HTTP(`/open/emc/module/bp/wechat/select-invoice-detail`,{
+					invoiceId : invoiceId,
+				}).then(res=>{
+					var invoice = res.data.invoice;
+					this.invoice = invoice;
+					var contract = res.data.contract;
+					this.contract = contract;
+					var wxOrders = res.data.wxOrders;
+					if (wxOrders != undefined && wxOrders.length > 0) {
+						this.wxOrderId = wxOrders[0].id;
 					}
-				})
+				}).catch(err=>{
+				});
 			},
 			viewInvoicePic : function(downloadUrl){
 				var _this = this;

@@ -1,5 +1,5 @@
 import utils from '../../common/util.js';
-import rsajs from '../../common/utils/RSA.js';
+import rsajs from '../../common/RSA.js';
 import md5js from '../../common/MD5.js';
 export default {
 	methods: {

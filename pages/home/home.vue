@@ -7,11 +7,11 @@
 				<image mode="widthFix" class="home-top-img" src="/static/image/home-top.jpg"></image>
 			</view>
 			<view class="function-grid">
-				<!-- <view class="function-grid-box" @tap="toPage('../placeorder/placeorder', true)">
+				<view class="function-grid-box" @tap="toPage('../placeorder/placeorder', true)">
 					<view class="text-xsl text-sunway-blue "><text class="cuIcon-cart"></text></view>
 					<view class="text-lg text-bold"><text>自助下单</text></view>
 					<view class="text-sm text-grey"><text>ORDER</text></view> 
-				</view> -->
+				</view>
 				<view class="function-grid-box" @tap="toPage('../entrust/entrust', true)">
 					<view class="text-xsl text-sunway-blue"><text class="cuIcon-edit"></text></view>
 					<view class="text-lg text-bold"><text>检测委托</text></view>
@@ -22,14 +22,14 @@
 					<view class="text-lg text-bold"><text>任务查询</text></view>
 					<view class="text-sm text-grey"><text>QUERY</text></view>
 				</view>
-				<!-- <view class="function-grid-box" @tap="toPage('../selectorder/selectorder?tabIndex=3', true)">
+				<view class="function-grid-box" @tap="toPage('../selectorder/selectorder?tabIndex=3', true)">
 					<view class="text-xsl text-sunway-blue"><text class="cuIcon-evaluate"></text></view>
 					<view class="text-lg text-bold"><text>客户评价</text></view>
 					<view class="text-sm text-grey"><text>EVALUATE</text></view>
 					<view class="tab-tag" v-if="toCommentCue > 0" >
 						<block v-if="toCommentCue!=1">{{toCommentCue>99?'99+':toCommentCue}}</block>
 					</view>
-				</view> -->
+				</view>
 				<view class="function-grid-box" @tap="toPage('../selecttodo/selecttodo', true)" v-if="todoShow">
 					<view class="text-xsl text-sunway-blue"><text class="cuIcon-check"></text></view>
 					<view class="text-lg text-bold"><text>待办/审批</text></view>
@@ -72,6 +72,9 @@
 				console.log(toCommentCue)
 				that.toCommentCue = toCommentCue;
 			})
+		},
+		onUnload() {
+			uni.$off('toCommentCue');
 		},
 		onShow : function (e) {
 			// if(!utils.isLogin()){

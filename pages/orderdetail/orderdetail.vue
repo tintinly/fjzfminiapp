@@ -244,6 +244,7 @@
 </template>
 
 <script>
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
@@ -301,59 +302,40 @@
 				item.showChildren = !item.showChildren;
 			},
 			selectOrderDetail: function(wxOrderId) {
-				uni.showLoading({
-					title: '查询中...',
-				})
-				uni.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-wx-order-detail',
-					data : {
-						wxOrderId : wxOrderId,
-					},
-					method : getApp().globalData.method,
-					success : (res) => {
-						console.log(res)
-						var orderDetailList = res.data.orderDetailList
-						var pointDetailList = orderDetailList.filter(f=>f.parentId == undefined);
-						var testDetailList = orderDetailList.filter(f=>f.parentId != undefined);
-						for (var i = 0; i < pointDetailList.length; i++) {
-							pointDetailList[i].children = [];
-							pointDetailList[i].showChildren = false;
-							for (var j = 0; j < testDetailList.length; j++) {
-								if (pointDetailList[i].id == testDetailList[j].parentId) {
-									pointDetailList[i].children.push(testDetailList[j]);
-								}
+				HTTP(`/open/emc/module/bp/wechat/select-wx-order-detail`,{
+					wxOrderId : wxOrderId,
+				}).then(res=>{
+					var orderDetailList = res.data.orderDetailList
+					var pointDetailList = orderDetailList.filter(f=>f.parentId == undefined);
+					var testDetailList = orderDetailList.filter(f=>f.parentId != undefined);
+					for (var i = 0; i < pointDetailList.length; i++) {
+						pointDetailList[i].children = [];
+						pointDetailList[i].showChildren = false;
+						for (var j = 0; j < testDetailList.length; j++) {
+							if (pointDetailList[i].id == testDetailList[j].parentId) {
+								pointDetailList[i].children.push(testDetailList[j]);
 							}
 						}
-						this.orderDetailList = pointDetailList;
-						console.log(this.orderDetailList);
-						this.order = res.data.order;
-						var order = this.order;
-						if (pointDetailList !== undefined) {
-							order.total = 0
-							for (var i = 0; i < pointDetailList.length; i++) {
-								console.log(pointDetailList[i])
-								if (order.isSampleType == '1') {
-									order.total = order.total + (pointDetailList[i].price - 0) *pointDetailList[i].dayNumber* pointDetailList[i].frequency
-								} else {
-									order.total = order.total + (pointDetailList[i].price - 0) 
-								}
-							} 
-						}
-						if(order.tradeState== 'NOTPAY') {
-							this.countDown()
-						}
-						uni.hideLoading()
-					},
-					fail : (res) =>{
-						console.log(res)
-						uni.hideLoading()
-						uni.showToast({
-							title: '网络错误',
-							icon: 'error',
-							duration: 1500
-						})
 					}
-				})
+					this.orderDetailList = pointDetailList;
+					console.log(this.orderDetailList);
+					this.order = res.data.order;
+					var order = this.order;
+					if (pointDetailList !== undefined) {
+						order.total = 0
+						for (var i = 0; i < pointDetailList.length; i++) {
+							if (order.isSampleType == '1') {
+								order.total = order.total + (pointDetailList[i].price - 0) *pointDetailList[i].dayNumber* pointDetailList[i].frequency
+							} else {
+								order.total = order.total + (pointDetailList[i].price - 0) 
+							}
+						} 
+					}
+					if(order.tradeState== 'NOTPAY') {
+						this.countDown()
+					}
+				}).catch(err=>{
+				});
 			},
 			countDown : function() {
 				const end = Date.parse(new Date(this.order.timeExpire))

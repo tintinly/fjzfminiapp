@@ -1,5 +1,5 @@
-import { HTTP } from './http.js'
-import rsajs from './utils/RSA.js';
+import { HTTP } from './http.js';
+import rsajs from './RSA.js';
 import md5js from './MD5.js';
 /* ==================
 	        工具方法

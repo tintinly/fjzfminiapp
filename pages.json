@@ -30,12 +30,6 @@
 			}
 		},		
 		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		},
-		{
 			"path": "pages/mydetail/mydetail",
 			"style": {
 				"navigationBarTitleText": "个人信息"
@@ -45,12 +39,6 @@
 			"path": "pages/placeorder/placeorder",
 			"style": {
 				"navigationBarTitleText": "下单"
-			}
-		},
-		{
-			"path": "pages/select/select",
-			"style": {
-				"navigationBarTitleText": "查询"
 			}
 		},
 		{
@@ -70,37 +58,24 @@
 			"style": {
 				"navigationBarTitleText": "样品信息"
 			}
-		}
-		// {
-		//     "path" : "pages/post/post",
-		//     "style" : {
-		//         "enablePullDownRefresh": true,
-		//         "navigationBarTitleText": "发现"
-		//     }
-		// },
-		// {
-		//     "path" : "pages/post/postdetail",
-		//     "style" : {
-		//         "navigationBarTitleText": "文章"
-		//     }
-		// }
-        ,{
+		},
+		{
             "path" : "pages/entrust/entrust",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "检测委托"
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/customerservice/customerservice",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "客服"
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/cancelacount/cancelacount",
             "style" :                                                                                    
             {
@@ -108,8 +83,8 @@
 				"navigationBarTitleText": "账号注销"
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/selectorder/selectorder",
             "style" :                                                                                    
             {
@@ -117,32 +92,32 @@
 				// "navigationStyle": "custom"
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/todo/todo",
             "style" :                                                                                    
             {
 				"navigationBarTitleText": "提示"
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/projectdetail/projectdetail",
             "style" :                                                                                    
             {
 				"navigationBarTitleText": "任务详情"
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/option/option",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "设置"
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/about/about",
             "style" :                                                                                    
             {
@@ -150,8 +125,8 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/selectentrust/selectentrust",
             "style" :                                                                                    
             {
@@ -159,8 +134,8 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/feedback/feedback",
             "style" :                                                                                    
             {
@@ -168,8 +143,8 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/orderdetail/orderdetail",
             "style" :                                                                                    
             {
@@ -178,8 +153,8 @@
 				"navigationStyle": "custom",
 				"backgroundColorTop": "#3881ed"
             }
-        }
-        ,{
+        },
+		{
             "path" : "pages/entrustdetail/entrustdetail",
             "style" :                                                                                    
             {
@@ -187,8 +162,8 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/ordercomment/ordercomment",
             "style" :                                                                                    
             {
@@ -197,18 +172,8 @@
 				"navigationStyle": "custom",
 				"backgroundColorTop": "#3881ed"
             }
-        }
-		// ,{
-  //           "path" : "pages/entrustcomment/entrustcomment",
-  //           "style" :                                                                                    
-  //           {
-  //               "navigationBarTitleText": "",
-  //               "enablePullDownRefresh": false,
-		// 		"navigationStyle": "custom",
-		// 		"backgroundColorTop": "#3881ed"
-  //           }
-  //       }
-        ,{
+        },
+		{
             "path" : "pages/selectinvoice/selectinvoice",
             "style" :                                                                                    
             {
@@ -216,8 +181,8 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
+        },
+		{
             "path" : "pages/invoicedetail/invoicedetail",
             "style" :                                                                                    
             {
@@ -275,12 +240,6 @@
 	      "iconPath": "static/tabbar-icons/unSelected-icons/home.png",
 	      "selectedIconPath": "static/tabbar-icons/selected-icons/home.png"
 	    },
-		// {
-		//   "pagePath": "pages/post/post",
-		//   "text": "发现",
-		//   "iconPath": "static/tabbar-icons/unSelected-icons/faxian_3.png",
-		//   "selectedIconPath": "static/tabbar-icons/selected-icons/faxian_3.png"
-		// },
 	    {
 	      "pagePath": "pages/my/my",
 	      "text": "我的",

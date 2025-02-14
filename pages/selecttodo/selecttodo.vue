@@ -45,10 +45,12 @@
 		onLoad : function () {
 			var _this = this;
 			this.loadData();
-			uni.$on('updateTodo', function() {
-				console.log('触发了待办更新事件')
+			uni.$on('updateTodo', function(e) {
 				_this.loadData();
 			})
+		},
+		onUnload() {
+			uni.$off('updateTodo');
 		},
 		onShow: function () {
 			// this.loadData();

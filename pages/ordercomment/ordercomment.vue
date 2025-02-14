@@ -49,6 +49,7 @@
 
 <script>
 	import loginjs from '../login/login.js'
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
@@ -131,99 +132,55 @@
 				if (!this.submitable) {
 					return;
 				}
-				uni.showLoading({
-					title : '加载中'
-				})
-				uni.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/submit-feedback',
-					data : {
-						openId : getApp().globalData.openId,
-						clientId : getApp().globalData.userInfo.clientId,
-						clientContactId : getApp().globalData.userInfo.clientContactId,
-						commentList : this.commentList,
-						feedbackContent : this.feedbackContent,
-						coChannel : this.coChannel,
-						wxOrderId : this.wxOrderId
-					},
-					method : getApp().globalData.method,
-					success : (res) => {
-						if(res.statusCode != 200){
-							uni.hideLoading()
-							uni.showToast({
-								title: '发生错误',
-								icon: 'none',
-								duration: 1500
-							});
-						}else{
-						    uni.hideLoading()
-							that.back();
-							uni.$emit('refreshOrder', {})
-							loginjs.methods.selectRedDotCue(); // 评价后 更新订单待评价数量
-							uni.showToast({
-								title: '评价成功',
-								icon: 'sucess',
-								duration: 1500
-							});
-						}
-					},
-					fail : (res) => {
-						uni.hideLoading()
-						uni.showToast({
-							title: '网络错误',
-							icon: 'none',
-							duration: 1500
-						});
-					}
-				})
+				HTTP(`/open/emc/module/bp/wechat/submit-feedback`,{
+					openId : getApp().globalData.openId,
+					clientId : getApp().globalData.userInfo.clientId,
+					clientContactId : getApp().globalData.userInfo.clientContactId,
+					commentList : this.commentList,
+					feedbackContent : this.feedbackContent,
+					coChannel : this.coChannel,
+					wxOrderId : this.wxOrderId
+				}).then(res=>{
+					that.back();
+					uni.$emit('refreshOrder', {})
+					loginjs.methods.selectRedDotCue(); // 评价后 更新订单待评价数量
+					uni.showToast({
+						title: '评价成功',
+						icon: 'sucess',
+						duration: 1500
+					});
+				}).catch(err=>{
+				});
 			},
 			selectOrderComment: function(wxOrderId) {
-				
-				uni.showLoading({
-					title: '查询中...',
-				})
-				uni.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-feedback',
-					data : {
-						wxOrderId : wxOrderId,
-					},
-					method : getApp().globalData.method,
-					success : (res) => {
-						console.log(res)
-						var feedbackList = res.data.feedbackList
-						if (feedbackList.length == 0) {
-							this.readonly = false;
-						} else {
-							this.readonly = true;
-							this.coChannel = feedbackList[0].coChannel;
-							this.feedbackContent = feedbackList[0].feedbackContent;
-							var feedbackLineList = feedbackList[0].feedbackLineList ;
-							for(let i=0;i < feedbackLineList.length;i++){
-								if (i < this.commentList.length) {
-									this.commentList[i].commentTitle = feedbackLineList[i].commentTitle;
-									this.commentList[i].commentLevel = feedbackLineList[i].commentLevel;
-									this.commentList[i].comment = feedbackLineList[i].comment;
-								} else {
-									var obj = {
-										commentTitle : feedbackLineList[i].commentTitle,
-										commentLevel : feedbackLineList[i].commentLevel,
-										comment : feedbackLineList[i].comment,
-									}
-									this.commentList.push(obj)
+				HTTP(`/open/emc/module/bp/wechat/select-feedback`,{
+					wxOrderId : wxOrderId,
+				}).then(res=>{
+					var feedbackList = res.data.feedbackList
+					if (feedbackList.length == 0) {
+						this.readonly = false;
+					} else {
+						this.readonly = true;
+						this.coChannel = feedbackList[0].coChannel;
+						this.feedbackContent = feedbackList[0].feedbackContent;
+						var feedbackLineList = feedbackList[0].feedbackLineList ;
+						for(let i=0;i < feedbackLineList.length;i++){
+							if (i < this.commentList.length) {
+								this.commentList[i].commentTitle = feedbackLineList[i].commentTitle;
+								this.commentList[i].commentLevel = feedbackLineList[i].commentLevel;
+								this.commentList[i].comment = feedbackLineList[i].comment;
+							} else {
+								var obj = {
+									commentTitle : feedbackLineList[i].commentTitle,
+									commentLevel : feedbackLineList[i].commentLevel,
+									comment : feedbackLineList[i].comment,
 								}
+								this.commentList.push(obj)
 							}
-						};
-						uni.hideLoading()
-					},
-					fail : (res) =>{
-						console.log(res)
-						uni.hideLoading()
-						uni.showToast({
-							title: '网络错误',
-							icon: 'error',
-							duration: 1500
-						})
-					}
-				})
+						}
+					};
+				}).catch(err=>{
+				});
 			},
 		}
 	}

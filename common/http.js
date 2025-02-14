@@ -1,4 +1,4 @@
-const _show_error = (_message) => {
+const _show_error = (_message = "发生错误") => {
 	uni.showToast({
 		title: `${_message}`,
 		icon: 'none',
@@ -28,15 +28,20 @@ const HTTP = (url,data = {}, header = {}, method = 'POST') => {
 			success: (res) => {
 				uni.hideLoading();
 				console.log(res)
-				if (res?.data || res.statusCode == 200) {
-					resolve(res)
+				if (res.statusCode == 200) {
+					if (!res.data?.error) {
+						resolve(res)
+					} else {
+						_show_error( res.data.message)
+						reject(res)
+					}
 				} else {
-					_show_error( res.msg)
+					_show_error( res.data?.message)
 					reject(res)
 				}
-				
 			},
 			fail: (err) => {
+				console.log(err)
 				_show_error(err.errMsg)
 				uni.hideLoading();
 				reject(err)
@@ -44,7 +49,6 @@ const HTTP = (url,data = {}, header = {}, method = 'POST') => {
 		})
 	})
 }
-
 
 export {
 	HTTP

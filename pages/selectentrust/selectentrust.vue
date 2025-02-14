@@ -14,6 +14,9 @@
 			</view>
 		</scroll-view>
 		
+		<view v-if="warning" class="topTip">
+			<text class="cuIcon-warn text-yellow margin-right-sm"></text><text class="">未找到所属企业，请前往<text class="text-blue" @click="toPage('../mydetail/mydetail', true)">个人信息</text>中维护</text>
+		</view>
 		<sunway-empty-data v-if="noData" imgSrc="/static/image/cue/empty.svg"></sunway-empty-data>
 		
 		<view class="margin bg-white box-radius" v-for="item in entrustList"  @tap="toPage('../entrustdetail/entrustdetail?entrustId=' + item.id)">
@@ -33,6 +36,7 @@
 </template>
 
 <script>
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
@@ -40,11 +44,24 @@
 				entrustList : [],
 				accept : '',
 				submit : '',
-				noData : true
+				noData : true,
+				clientContactId : getApp().globalData.userInfo.clientContactId,
 			}
 		},
+		computed : {
+			warning(e) {
+				return this.clientContactId == undefined || this.clientContactId == '';
+			},
+		},
 		onLoad(e) {
-					this.selectEntrust(this.tabIndex)
+			var _this = this;
+			uni.$on('updateUserInfo',function(e){
+				_this.clientContactId = e.clientContactId
+			})
+			this.selectEntrust(this.tabIndex)
+		},
+		onUnload() {
+			uni.$off('updateUserInfo');
 		},
 		methods: {
 			toPage : function (url){
@@ -68,118 +85,30 @@
 					this.accept = 1
 					this.submit = 1
 				}
-				uni.showLoading({
-					title: '查询中...',
-				})
-				uni.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-entrust',
-					data : {
-						clientContactId : getApp().globalData.userInfo.clientContactId,
-						openId : getApp().globalData.openId,
-						accept : this.accept, 
-						submit : this.submit
-					},
-					method : getApp().globalData.method,
-					success : (res) => {
-						console.log(res)
-						if (res.statusCode != 200) {
-							this.entrustList = []
-							this.noData = true
-							uni.hideLoading()
-							uni.showToast({
-								title: '网络错误',
-								icon: 'error',
-								duration: 1500
-							})
-						}  else if(res.data.length == 0){
-							this.entrustList = []
-							this.noData = true
-							wx.showToast({
-								title: '未查到相关信息',
-								icon: 'none',
-								duration: 1500
-							});
-						} else {
-							this.entrustList = res.data
-							this.noData = false
-							for (var i = 0; i < this.entrustList.length; i++) {
-								if(this.entrustList[i].ext$.thumburl === undefined) {
-									this.entrustList[i].ext$.thumburl = '../../static/logo.png'
-								} else if (this.entrustList[i].ext$.thumburl.indexOf('http')  == -1) {
-									this.entrustList[i].ext$.thumburl = getApp().globalData.host + this.entrustList[i].ext$.thumburl
-								}
-							}
-							uni.hideLoading()
+				HTTP(`/open/emc/module/bp/wechat/select-entrust`,{
+					clientContactId : getApp().globalData.userInfo.clientContactId,
+					openId : getApp().globalData.openId,
+					accept : this.accept, 
+					submit : this.submit
+				}).then(res=>{
+					this.entrustList = res.data
+					for (var i = 0; i < this.entrustList.length; i++) {
+						if(this.entrustList[i].ext$.thumburl === undefined) {
+							this.entrustList[i].ext$.thumburl = '../../static/logo.png'
+						} else if (this.entrustList[i].ext$.thumburl.indexOf('http')  == -1) {
+							this.entrustList[i].ext$.thumburl = getApp().globalData.host + this.entrustList[i].ext$.thumburl
 						}
-						
-					},
-					fail : (res) =>{
-						console.log(res)
-						uni.hideLoading()
-						uni.showToast({
-							title: '网络错误',
-							icon: 'error',
-							duration: 1500
-						})
 					}
-				})
+					this.noData = this.entrustList.length == 0
+				}).catch(err=>{
+					this.entrustList = [];
+					this.noData = true
+				});
 			}
 		}
 	}
 </script>
 
 <style>
-	.box-radius {
-	    border-radius: 16rpx;
-	    box-shadow: 10rpx 10rpx 5rpx rgba(39, 48, 57, 0.05);
-	}
-	.bg-img {
-		position: absolute;
-		width: 300rpx;
-		top: 50%;
-			left:50%;
-			transform: translate(-50%,-50%);
-	}
-	.content-box {
-		margin: 15rpx 27rpx;
-		border-radius: 16rpx;
-		background-color: #ffffff;
-		box-shadow: 10px 10px 5px rgba(39, 48, 57, 0.05);
-	}
-	.content-title {
-		display: flex;
-		padding: 10px 10px;
-		align-items: center;
-		/* border-radius: 16rpx; */
-		/* min-height: 70upx; */
-		justify-content: space-between; 
-		border-bottom: 1upx solid rgba(0, 0, 0, 0.1);
-	}
-	
-	.content-bar {
-		display: flex;
-		align-items: center;
-		padding: 10px 10px;
-	}
-	
-	.title-left {
-		display: flex;
-		align-items: center;
-	}
-	
-	.image-left {
-		width: 50px;
-		height: 50px;
-	}
-	.thumb-image {
-		width: 100rpx;
-		height: 100rpx;
-	}
-	
-	.text-box {
-		overflow: hidden;
-		display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
-		-webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
-		-webkit-line-clamp: 3; /** 显示的行数 **/
-	}
+	@import url(../selectentrust/selectentrust.css);
 </style>

@@ -1,4 +1,10 @@
-
+.topTip {
+	margin: 15rpx 27rpx;
+	padding : 15rpx;
+	background-color: #ffffff;
+	box-shadow: 10px 10px 5px rgba(39, 48, 57, 0.05);
+}
+	
 .bg-img {
 	position: absolute;
 	width: 150px;

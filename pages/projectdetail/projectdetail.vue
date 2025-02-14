@@ -170,10 +170,12 @@
 </template>
 
 <script>
-	import  util from "../../common/util.js"
+	import  util from "../../common/util.js";
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
+				noDataBackgroud : '../../static/noData.png',
 				lineIndex : 1,
 				tabIndex : 1,
 				project : {
@@ -195,91 +197,57 @@
 			this.loadData(options.projId)
 		},
 		methods: {
-			loadData(projId) 	{
-				wx.showLoading({
-					title : '查询中'
-				})
-				wx.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-project-detail',
-					data : {
-						projectId : projId
-					},
-					method : getApp().globalData.method,
-					success : (projectDetail) => {
-						console.log('projectDetail',projectDetail)
-						if(projectDetail.statusCode != 200){
-							wx.hideLoading()
-							wx.showToast({
-								title: '网络错误',
-								icon: 'none',
-								duration: 1500
-							});
-						}else{
-							var data = projectDetail.data
-							console.log(data);
-							if (data.project != undefined) {
-								for (let key in data.project) {
-									if (data.project[key] != undefined) {
-										this.project[key] = data.project[key]
-									}
-								}
+			loadData(projId) {
+				HTTP(`/open/emc/module/bp/wechat/select-project-detail`,{
+					projectId : projId
+				}).then(res=>{
+					var data = res.data
+					if (data.project != undefined) {
+						for (let key in data.project) {
+							if (data.project[key] != undefined) {
+								this.project[key] = data.project[key]
 							}
-							
-							this.files = data.projFile
-							if (data.contract != undefined) {
-								for (let key in data.contract) {
-									if (data.contract[key] != undefined) {
-										this.contract[key] = data.contract[key]
-									}
-								}
-							}
-							// 处理文件名
-							// for (var i = 0; i < this.files.length; i++) {
-							// 	this.files[i].fileName = util.ellipsisFileName(this.files[i].fileName)
-							// }
-							
-							switch(this.project.projNode){
-								case "登记":
-									this.lineIndex = 1;
-									break
-								case "采样中":
-									this.lineIndex = 2;
-									break
-								case "样品接收":
-									this.lineIndex = 3;
-									break
-								case "分析中":
-									this.lineIndex = 3;
-									break
-								case "报告编制":
-									this.lineIndex = 4;
-									break
-								case "报告审核":
-									this.lineIndex = 5;
-									break
-								case "报告签发":
-									this.lineIndex = 6;
-									break
-								case "报告归档":
-									this.lineIndex = 7;
-									break
-								default:
-									this.lineIndex = 7;
-									break
-							}
-							
-						    wx.hideLoading()
 						}
-					},
-					fail : (res) =>{
-						wx.hideLoading()
-						wx.showToast({
-							title: '网络错误',
-							icon: 'none',
-							duration: 1500
-						});
 					}
-				})
+					this.files = data.projFile
+					if (data.contract != undefined) {
+						for (let key in data.contract) {
+							if (data.contract[key] != undefined) {
+								this.contract[key] = data.contract[key]
+							}
+						}
+					}
+					switch(this.project.projNode){
+						case "登记":
+							this.lineIndex = 1;
+							break
+						case "采样中":
+							this.lineIndex = 2;
+							break
+						case "样品接收":
+							this.lineIndex = 3;
+							break
+						case "分析中":
+							this.lineIndex = 3;
+							break
+						case "报告编制":
+							this.lineIndex = 4;
+							break
+						case "报告审核":
+							this.lineIndex = 5;
+							break
+						case "报告签发":
+							this.lineIndex = 6;
+							break
+						case "报告归档":
+							this.lineIndex = 7;
+							break
+						default:
+							this.lineIndex = 7;
+							break
+					}
+				}).catch(err=>{
+				});
 			},
 			tabSelect(e) {
 				this.tabIndex = e.currentTarget.dataset.id;

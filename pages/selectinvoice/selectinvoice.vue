@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view v-if="warning" class="topTip">
+			<text class="cuIcon-warn text-yellow margin-right-sm"></text><text class="">未找到所属企业，请前往<text class="text-blue" @click="toPage('../mydetail/mydetail', true)">个人信息</text>中维护</text>
+		</view>
 		<sunway-empty-data v-if="noData" imgSrc="/static/image/cue/empty.svg"></sunway-empty-data>
 <!-- 		<view class="bg-white margin-top margin-lr radius ">
 			<view class="flex padding align-center" >
@@ -31,70 +34,35 @@
 </template>
 
 <script>
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
 				invoiceList : [],
-				noData : true
+				noData : true,
+				clientContactId : getApp().globalData.userInfo.clientContactId,
 			}
+		},
+		computed : {
+			warning(e) {
+				return this.clientContactId == undefined || this.clientContactId == '';
+			},
 		},
 		/**
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-			wx.showLoading({
-				title : '查询中'
-			})
-			wx.request({
-				url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-invoice',
-				data : {
-					clientNo : options.clientNo
-				},
-				method : getApp().globalData.method,
-				success : (res) => {
-					if(res.statusCode != 200){
-						this.invoiceList = []
-						this.noData = true
-						wx.showToast({
-							title: '网络错误',
-							icon: 'none',
-							duration: 1500
-						});
-					}else if(res.data.length == 0){
-						this.invoiceList = []
-						this.noData = true
-						wx.showToast({
-							title: '未查到相关信息',
-							icon: 'none',
-							duration: 1500
-						});
-					}else{
-						var data = res.data;
-						console.log('data',data)
-						var invoiceList = [];
-						for(var i = 0 ; i < data.length ; i++){
-							invoiceList[invoiceList.length] = {
-								invoiceId : data[i].invoiceId ,
-								invoiceCategory : data[i].invoiceCategory ? data[i].invoiceCategory : '',
-								invoiceAmount : data[i].invoiceAmount ? data[i].invoiceAmount : '',
-								invoiceFilledDate : data[i].invoiceFilledDate ? data[i].invoiceFilledDate : '',
-							}
-						}
-						this.invoiceList = invoiceList;
-						this.noData = false
-					    wx.hideLoading()
-					}
-				},
-				fail : (res) =>{
-					console.log(res)
-					uni.hideLoading()
-					uni.showToast({
-						title: '网络错误',
-						icon: 'error',
-						duration: 1500
-					})
+			var _this = this;
+			uni.$on('updateUserInfo',function(e) {
+				_this.clientContactId = e.clientContactId
+				if (_this.clientContactId != undefined && _this.clientContactId != '') {
+					_this.loadData();
 				}
 			})
+			this.loadData();
+		},
+		onUnload() {
+			uni.$off('updateUserInfo');
 		},
 		methods: {
 			// 跳转函数
@@ -103,6 +71,27 @@
 					url: url
 				})
 			},
+			loadData : function() {
+				HTTP(`/open/emc/module/bp/wechat/select-invoice`,{
+					clientNo : getApp().globalData.userInfo.clientNo
+				}).then(res=>{
+					var data = res.data;
+					var invoiceList = [];
+					for(var i = 0 ; i < data.length ; i++){
+						invoiceList[invoiceList.length] = {
+							invoiceId : data[i].invoiceId ,
+							invoiceCategory : data[i].invoiceCategory ? data[i].invoiceCategory : '',
+							invoiceAmount : data[i].invoiceAmount ? data[i].invoiceAmount : '',
+							invoiceFilledDate : data[i].invoiceFilledDate ? data[i].invoiceFilledDate : '',
+						}
+					}
+					this.invoiceList = invoiceList;
+					this.noData = this.invoiceList.length == 0
+				}).catch(err=>{
+					this.invoiceList = [];
+					this.noData = true
+				});
+			}
 		}
 	}
 </script>

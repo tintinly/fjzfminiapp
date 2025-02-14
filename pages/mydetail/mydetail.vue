@@ -86,6 +86,7 @@
 <script>
 	import myDetail from './mydetail.js'
 	import utils from '../../common/util.js';
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data () {
 			return {
@@ -170,108 +171,77 @@
 				})
 			},
 			saveUserInfo :function(){
-				console.log('我的信息', this.myInfo);
 				var _this = this;
-				uni.showLoading();
 				this.uploadAvatar().then(uri=>{
 					console.log('头像路径', uri)
 					this.myInfo.avatarUrl = getApp().globalData.host + uri
 					this.myInfo.avatar = uri
-					wx.request({
-						url: getApp().globalData.host + '/open/emc/module/bp/wechat/update-user-info',
-						data: {
-							openId : getApp().globalData.openId,
-							userInfo : _this.myInfo,
-						},
-						method : getApp().globalData.method,
-						success: (res) =>{
-							if (res.statusCode == "500") {
-								wx.hideLoading();
-								uni.showModal({
-									title: '更新错误',
-									icon : 'error',
-									success : res=>{
-									}
-								});
-					
-							} 
-								
-							var userInfo = res.data;
-							_this.userInfo = userInfo;
-							this.loadData();
-							uni.hideLoading();
-							uni.showToast({
-								title: '更新成功',
-								icon : 'none',
-								duration: 1000,
-								success : res=>{
-									setTimeout(function () { 
-										_this.back();
-									 }, 1000) 
-								}
-							});
-						},
-						fail: clientData=>{
-							uni.showToast({
-								title: '保存用户信息失败',
-								icon: 'none',
-								duration: 1500,
-							});
-							
-						}
-					})
+					HTTP(`/open/emc/module/bp/wechat/update-user-info`,{
+						openId : getApp().globalData.openId,
+						userInfo : this.myInfo,
+					}).then(res=>{
+						var userInfo = res.data;
+						this.userInfo = userInfo;
+						this.loadData();
+						uni.hideLoading();
+						uni.showToast({
+							title: '更新成功',
+							icon : 'none',
+							duration: 1000,
+							success : res=>{
+								setTimeout(function () { 
+									_this.back();
+								 }, 1000) 
+							}
+						});
+					}).catch(err=>{
+					});
 				})
 			},
 			loadData : function(options){
 				var _utils = utils;
-				wx.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/get-user-info',
-					data : {
-						openId : getApp().globalData.openId,
-						phoneNumber : getApp().globalData.phoneNumber
-					},
-					method : 'POST',
-					success : (clientData) =>{
-						wx.setStorageSync('userInfo', clientData.data);
-						getApp().globalData.userInfo = clientData.data;
-						this.userInfo = clientData.data;
-						// 用户信息
-						if (this.userInfo.avatar != undefined && this.userInfo.avatar != '') {
-							this.myInfo.avatar = this.userInfo.avatar;
-							this.myInfo.avatarUrl = getApp().globalData.host + this.userInfo.avatar;
-						}
-						if (this.userInfo.birthday != undefined && this.userInfo.birthday != '') {
-							this.myInfo.birthday = this.userInfo.birthday;
-						}
-						if (this.userInfo.name != undefined && this.userInfo.name != '') {
-							this.myInfo.name = this.userInfo.name;
-						}
-						if (this.userInfo.clientName != undefined && this.userInfo.clientName != '') {
-							this.myInfo.clientName = this.userInfo.clientName;
-						}
-						if (this.userInfo.address != undefined && this.userInfo.address != '') {
-							this.myInfo.address = this.userInfo.address;
-						}
-						this.myInfo.nickName = this.userInfo.nickName;
-						this.myInfo.phoneNumber = this.userInfo.phoneNumber;
-						this.myInfo.gender = this.userInfo.gender;
-						this.myInfo.name = this.userInfo.lxrName;
-						this.myInfo.clientNo = this.userInfo.clientNo;
-						this.myInfo.clientName = this.userInfo.clientName;
-						this.myInfo.address = this.userInfo.address;
-						uni.$emit('updateUserInfo', this.userInfo)
-					},
-					fail : clientData=>{
-						wx.switchTab({
-							url : '../my/my',
-						});
-						wx.showToast({
-							title : '查询用户信息失败',
-							icon : 'none',
-							duration : 1500
-						});
+				HTTP(`/open/emc/module/bp/wechat/get-user-info`,{
+					openId : getApp().globalData.openId,
+					phoneNumber : getApp().globalData.phoneNumber
+				}).then(res=>{
+					wx.setStorageSync('userInfo', res.data);
+					getApp().globalData.userInfo = res.data;
+					this.userInfo = res.data;
+					// 用户信息
+					if (this.userInfo.avatar != undefined && this.userInfo.avatar != '') {
+						this.myInfo.avatar = this.userInfo.avatar;
+						this.myInfo.avatarUrl = getApp().globalData.host + this.userInfo.avatar;
 					}
-				})
+					if (this.userInfo.birthday != undefined && this.userInfo.birthday != '') {
+						this.myInfo.birthday = this.userInfo.birthday;
+					}
+					if (this.userInfo.name != undefined && this.userInfo.name != '') {
+						this.myInfo.name = this.userInfo.name;
+					}
+					if (this.userInfo.clientName != undefined && this.userInfo.clientName != '') {
+						this.myInfo.clientName = this.userInfo.clientName;
+					}
+					if (this.userInfo.address != undefined && this.userInfo.address != '') {
+						this.myInfo.address = this.userInfo.address;
+					}
+					this.myInfo.nickName = this.userInfo.nickName;
+					this.myInfo.phoneNumber = this.userInfo.phoneNumber;
+					this.myInfo.gender = this.userInfo.gender;
+					this.myInfo.name = this.userInfo.lxrName;
+					this.myInfo.clientNo = this.userInfo.clientNo;
+					this.myInfo.clientName = this.userInfo.clientName;
+					this.myInfo.address = this.userInfo.address;
+					uni.$emit('updateUserInfo', this.userInfo)
+				}).catch(err=>{
+					wx.switchTab({
+						url : '../my/my',
+					});
+					wx.showToast({
+						title : '查询用户信息失败',
+						icon : 'none',
+						duration : 1500
+					});
+				});
 			},
 			logout : function(e) {
 				utils.logout();

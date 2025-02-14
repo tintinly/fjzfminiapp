@@ -200,6 +200,7 @@
 <script>
 	import md5 from '../../common/MD5.js'
 	import loginjs from '../login/login.js'
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data () {
 			return {
@@ -216,13 +217,13 @@
 					entrustOrgName : getApp().globalData.userInfo.clientName,
 					entrustOrgAddress : getApp().globalData.userInfo.address,
 					entrustOrgContact : getApp().globalData.userInfo.lxrName,
-					entrustOrgPhone : getApp().globalData.userInfo.lxrPhone,
+					entrustOrgPhone : getApp().globalData.userInfo.phoneNumber,
 					
 					//受检单位相关参数
 					testOrgName : getApp().globalData.userInfo.clientName,
 					testOrgAddress : getApp().globalData.userInfo.address,
 					testOrgContact : getApp().globalData.userInfo.lxrName,
-					testOrgPhone : getApp().globalData.userInfo.lxrPhone,
+					testOrgPhone : getApp().globalData.userInfo.phoneNumber,
 					
 					
 					//点位数量
@@ -340,6 +341,12 @@
 			// 监听更新事件
 			uni.$on('updateFolder', this.updateFolder)
 			uni.$on('updateOrder', this.updateOrder)
+		},
+		onUnload() {
+			uni.$off('addFolder');
+			uni.$off('addOrder');
+			uni.$off('updateFolder');
+			uni.$off('updateOrder');
 		},
 		methods : {
 			 swipeFolder(e, num){
@@ -574,204 +581,197 @@
 				
 				
 				var returnDetectionFaction = [];
-				var type = false;
+				var flag = false;
 				if(entrustOrgName == undefined || entrustOrgAddress == undefined || entrustOrgContact == undefined || entrustOrgPhone == undefined
-					|| testOrgName == undefined || testOrgAddress == undefined || testOrgContact == undefined ||testOrgPhone == undefined
-					|| folderNumber == undefined || folderNumber.length < 0){
-						type = true;
+					|| testOrgName == undefined || testOrgAddress == undefined || testOrgContact == undefined ||testOrgPhone == undefined){
+						flag = true;
 				}
-				if(type){
+				if(flag){
 					wx.showToast({
 						title: '请完善信息',
 						icon: 'none',
 						duration: 1500
 					});
-				}else{
-					wx.showModal({
-						title: '提示',
-						content: '提交后信息无法修改，请再次确认是否提交',
-						success (res) {
-							
-							
-							if (res.confirm) {
-								// 清空点位和样品缓存
-								getApp().globalData.folderList = []
-								getApp().globalData.orderList = []
-								
-								//价格参数
-								var price = 0;
-								var list = orderList;
-								if(isSampleType){
-									list = folderList;
-								}
-								//循环检索点位数据对应的价格因子数据
-								for (var i = 0 ; i < detectionFactionList.length ; i++){
-									for(var j = 0 ; j < list.length ; j ++){
-										// if(detectionFactionList[i].ext$.monitortmplid.indexOf(list[j].monitorTmplId) > -1 
-										// 	&& list[j].testId == detectionFactionList[i].testId 
-										// 	&& list[j].methodId == detectionFactionList[i].methodId 
-										// 	&& list[j].itemGroupId == detectionFactionList[i].itemGroupId){
-										if( list[j].testItemIds.indexOf(detectionFactionList[i].ext$.id) > -1){
-											returnDetectionFaction[returnDetectionFaction.length] = detectionFactionList[i];
-											list[j].detectionFactionId = detectionFactionList[i].id;
-											var samplePrice =detectionFactionList[i].samplePrice;
-											var analysisPrice = detectionFactionList[i].analysisPrice;
-											
-											if(isSampleType){
-												price = price*100/100 + (samplePrice*100/100 + analysisPrice*100/100) * list[j].dayNumber * list[j].frequency;
-											} else {
-												price = price*100/100 + analysisPrice*100/100;
-											}
-											if(urgentType == '加急') {
-												price = price * 1.5
-											} 
-											
-											if(urgentType == '特急') {
-												price = price * 2
-											} 
+					return;
+				}
+				if(this.sameTpye && folderList.length == 0){
+					wx.showToast({
+						title: '请添加点位信息',
+						icon: 'none',
+						duration: 1500
+					});
+					return;
+				}
+				if(!this.sameTpye && orderList.length == 0){
+					wx.showToast({
+						title: '请添加样品信息',
+						icon: 'none',
+						duration: 1500
+					});
+					return;
+				}
+				wx.showModal({
+					title: '提示',
+					content: '提交后信息无法修改，请再次确认是否提交',
+					success (res) {
+						
+						
+						if (res.confirm) {
+							//价格参数
+							var price = 0;
+							var list = orderList;
+							if(isSampleType){
+								list = folderList;
+							}
+							//循环检索点位数据对应的价格因子数据
+							for (var i = 0 ; i < detectionFactionList.length ; i++){
+								for(var j = 0 ; j < list.length ; j ++){
+									// if(detectionFactionList[i].ext$.monitortmplid.indexOf(list[j].monitorTmplId) > -1 
+									// 	&& list[j].testId == detectionFactionList[i].testId 
+									// 	&& list[j].methodId == detectionFactionList[i].methodId 
+									// 	&& list[j].itemGroupId == detectionFactionList[i].itemGroupId){
+									if( list[j].testItemIds.indexOf(detectionFactionList[i].ext$.id) > -1){
+										returnDetectionFaction[returnDetectionFaction.length] = detectionFactionList[i];
+										list[j].detectionFactionId = detectionFactionList[i].id;
+										var samplePrice =detectionFactionList[i].samplePrice;
+										var analysisPrice = detectionFactionList[i].analysisPrice;
+										
+										if(isSampleType){
+											price = price*100/100 + (samplePrice*100/100 + analysisPrice*100/100) * list[j].dayNumber * list[j].frequency;
+										} else {
+											price = price*100/100 + analysisPrice*100/100;
 										}
+										if(urgentType == '加急') {
+											price = price * 1.5
+										} 
+										
+										if(urgentType == '特急') {
+											price = price * 2
+										} 
 									}
 								}
-			
-								/*** 请求后台  服务端调用微信支付接口 ***/
-								wx.request({
-									url: getApp().globalData.host + '/open/emc/module/bp/wechat/create-PreOrder',
-									method: getApp().globalData.method,
-									data : {
-										"openId": getApp().globalData.openId,
-										"clientContactId" : getApp().globalData.userInfo.clientContactId,
-										"orderNo": (new Date().getTime()).toString(),
-										"desc": "委托监测",
-										"price": 1,
-										"urgentType" : urgentType,
-										"billType": billType,
-										"paperType" : paperType,
-										"receiveAddress" : receiveAddress,
-										"isSampleType" : isSampleType,
-										"orderList" : orderList,
-										"folderList" : folderList,
-										"entrustOrgName" : entrustOrgName,
-										"entrustOrgAddress" : entrustOrgAddress,
-										"entrustOrgContact" : entrustOrgContact,
-										"entrustOrgPhone" : entrustOrgPhone,
-										"testOrgName" : testOrgName,
-										"testOrgAddress" : testOrgAddress,
-										"testOrgContact" : testOrgContact,
-										"testOrgPhone" : testOrgPhone,
-										// "notifyServer" : 'http://xqsf6a.natappfree.cc' //回调服务地址
-										"notifyServer" : getApp().globalData.host //回调服务地址
-									},
-									success : function(res){
-										
-										console.log('预订单信息',res);
-										if (res.data.valid == 'false') {
+							}
+		
+							/*** 请求后台  服务端调用微信支付接口 ***/
+							HTTP(`/open/emc/module/bp/wechat/create-PreOrder`,{
+								appId: getApp().globalData.appId,
+								openId: getApp().globalData.openId,
+								clientContactId : getApp().globalData.userInfo.clientContactId,
+								orderNo: (new Date().getTime()).toString(),
+								desc: "委托监测",
+								price: 1,
+								urgentType : urgentType,
+								billType: billType,
+								paperType : paperType,
+								receiveAddress : receiveAddress,
+								isSampleType : isSampleType,
+								orderList : orderList,
+								folderList : folderList,
+								entrustOrgName : entrustOrgName,
+								entrustOrgAddress : entrustOrgAddress,
+								entrustOrgContact : entrustOrgContact,
+								entrustOrgPhone : entrustOrgPhone,
+								testOrgName : testOrgName,
+								testOrgAddress : testOrgAddress,
+								testOrgContact : testOrgContact,
+								testOrgPhone : testOrgPhone,
+								notifyServer : 'http://cn-qz-plc-1.ofalias.net:55134/',
+								// notifyServer : getApp().globalData.host //回调服务地址
+							}).then(res=>{
+								if (res.data.valid == 'false') {
+									wx.showToast({
+										title: res.data.message,
+										icon: 'none',
+										duration: 2000
+									});
+								}
+								// todo  
+								//生成一个未支付的预订单   
+								//将预订单生成一个预览页面展示， 
+								//用户选择支付方式及填写备注后支付 
+																	
+								// 获取订单id
+								var wxOrderId = res.data.id
+								wx.requestPayment({
+									appId: getApp().globalData.appId,
+									timeStamp: res.data.timestamp,
+									nonceStr: res.data.nonceStr,
+									package: res.data.package,
+									signType: res.data.signType,
+									paySign: res.data.paySign,
+									success : function (res) {
+										// 付款成功后数据传回后台生成合同以及任务
+										HTTP(`/open/emc/module/bp/wechat/create-data`,{
+											wxOrderId : wxOrderId,
+											folderList : folderList,
+											folderNumber : folderNumber,
+											orderList : orderList,
+											orderNumber : orderNumber,
+											isSampleType : isSampleType,
+											entrustOrgName : entrustOrgName,
+											entrustOrgAddress : entrustOrgAddress,
+											entrustOrgContact : entrustOrgContact,
+											entrustOrgPhone : entrustOrgPhone,
+											testOrgName : testOrgName,
+											testOrgAddress : testOrgAddress,
+											testOrgContact : testOrgContact,
+											testOrgPhone : testOrgPhone,
+											price : price,
+										}).then(res=>{
+											// 清空点位和样品缓存
+											getApp().globalData.folderList = []
+											getApp().globalData.orderList = []
+											wx.requestSubscribeMessage({
+											  tmplIds: ['grgzgyHgYR471-5j_59Y6wVMNIZhNjYLu99eXWOUwD0'],
+											  success (res) {
+											  }
+											})
+											uni.redirectTo({
+												url: `../orderdetail/orderdetail?wxOrderId=${wxOrderId}` ,
+											})
+											uni.showToast({
+												title: '支付成功',
+												icon: 'none',
+												duration: 2000
+											});
+											loginjs.methods.selectRedDotCue(); // 支付订单后 更新订单待评价数量
+										}).catch(err=>{
 											wx.showToast({
-												title: res.data.message,
+												title: '任务生成失败，请联系管理员',
+												icon: 'none',
+												duration: 2000
+											});
+										});
+									},
+									fail : function (res) {
+										if (res.errMsg === 'requestPayment:fail cancel') {
+											wx.showToast({
+												title: '用户取消支付',
+												icon: 'none',
+												duration: 2000
+											});
+										} else {
+											wx.showToast({
+												title: res.errMsg,
 												icon: 'none',
 												duration: 2000
 											});
 										}
-										// todo  
-										//生成一个未支付的预订单   
-										//将预订单生成一个预览页面展示， 
-										//用户选择支付方式及填写备注后支付 
-									
-									
-										// 获取订单id
-										var wxOrderId = res.data.id
-										wx.requestPayment({
-											"appId": getApp().globalData.appId,
-											"timeStamp": res.data.timestamp,
-											"nonceStr": res.data.nonceStr,
-											"package": res.data.package,
-											"signType": res.data.signType,
-											"paySign": res.data.paySign,
-											"success" : function (res) {
-												
-												console.log('支付情况',res)
-												// 付款成功后数据传回后台生成合同以及任务
-												wx.request({
-													url: getApp().globalData.host + '/open/emc/module/bp/wechat/create-data',
-													data : {
-														wxOrderId : wxOrderId,
-														folderList : folderList,
-														folderNumber : folderNumber,
-														orderList : orderList,
-														orderNumber : orderNumber,
-														isSampleType : isSampleType,
-														entrustOrgName : entrustOrgName,
-														entrustOrgAddress : entrustOrgAddress,
-														entrustOrgContact : entrustOrgContact,
-														entrustOrgPhone : entrustOrgPhone,
-														testOrgName : testOrgName,
-														testOrgAddress : testOrgAddress,
-														testOrgContact : testOrgContact,
-														testOrgPhone : testOrgPhone,
-														price : price,
-													},
-													method: 'POST',
-													success: (res) => {
-														wx.requestSubscribeMessage({
-														  tmplIds: ['grgzgyHgYR471-5j_59Y6wVMNIZhNjYLu99eXWOUwD0'],
-														  success (res) {
-															  
-														  }
-														})
-														uni.redirectTo({
-															url: `../orderdetail/orderdetail?wxOrderId=${wxOrderId}` ,
-														})
-														uni.showToast({
-															title: '支付成功',
-															icon: 'none',
-															duration: 2000
-														});
-														loginjs.methods.selectRedDotCue(); // 支付订单后 更新订单待评价数量
-													},
-													fail : function	(res) {
-														
-														wx.showToast({
-															title: '任务生成失败，请联系管理员',
-															icon: 'none',
-															duration: 2000
-														});
-													}
-												});
-											},
-											"fail" : function (res) {
-												if (res.errMsg === 'requestPayment:fail cancel') {
-													wx.showToast({
-														title: '用户取消支付',
-														icon: 'none',
-														duration: 2000
-													});
-												} else {
-													wx.showToast({
-														title: res.errMsg,
-														icon: 'none',
-														duration: 2000
-													});
-												}
-												uni.redirectTo({
-													url: `../orderdetail/orderdetail?wxOrderId=${wxOrderId}` ,
-												})
-											},
-										});
-										
-										
+										uni.redirectTo({
+											url: `../orderdetail/orderdetail?wxOrderId=${wxOrderId}` ,
+										})
 									},
-									fail : function	(res) {
-										
-										wx.showToast({
-											title: '请求微信支付接口出错，请联系管理员',
-											icon: 'none',
-											duration: 2000
-										});
-									}
 								});
-							}
+							}).catch(err=>{
+								wx.showToast({
+									title: '请求微信支付接口出错，请联系管理员',
+									icon: 'none',
+									duration: 2000
+								});
+							});
 						}
-					});
-				}
+					}
+				});
 			},
 		},
 	}

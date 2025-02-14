@@ -48,7 +48,7 @@
 		</view>
 		<view class="cu-list menu card-menu  margin-bottom-xl shadow-lg">
 			<view class="cu-item arrow" >
-				<view class="content" @click="toPage('../selectinvoice/selectinvoice?clientNo=' + clientNo, true)">
+				<view class="content" @click="toPage('../selectinvoice/selectinvoice', true)">
 					<text class="cuIcon-ticket text-sunway-blue"></text>
 					<text class="text-black">发票管理</text>
 				</view>
@@ -59,12 +59,6 @@
 					<text class="text-black">个人资料</text>
 				</view>
 			</view>
-		<!-- 	<view class="cu-item arrow" @click="toPage('../selectorder/selectorder')">
-				<view class="content">
-					<text class="cuIcon-cartfill text-sunway-blue"></text>
-					<text class="text-black">订单</text>
-				</view>
-			</view> -->
 			<view class="cu-item arrow" @click="toPage('../about/about')">
 				<view class="content">
 					<image src="../../static/image/loginpic.jpg" class="png" mode="aspectFit"></image>
@@ -109,7 +103,6 @@
 				Adminstator: false,
 				TapAccount: 0,
 				unPayNum : getApp().globalData.unPayNum,
-				clientNo : getApp().globalData.userInfo.clientNo,
 				//用户信息
 				myInfo : {
 					avatarUrl : '../../static/icon/defaultAvatar.jpg',
@@ -154,6 +147,10 @@
 			uni.$on('updateAvatar',this.updateAvatar)
 			uni.$on('updateUserInfo',this.updateUserInfo)
 		},
+		onUnload() {
+			uni.$off('updateAvatar');
+			uni.$off('updateUserInfo');
+		},
 		onShow : function (e) {
 			// if(!utils.isLogin()){
 			// 	uni.navigateTo({
@@ -170,13 +167,12 @@
 			if (this.userInfo.avatar != undefined && this.userInfo.avatar != '') {
 				this.myInfo.avatarUrl = getApp().globalData.host + this.userInfo.avatar
 			}
-			if (this.userInfo.lxrPhone != undefined && this.userInfo.lxrPhone != '') {
-				this.myInfo.phoneNumber = this.userInfo.lxrPhone
+			if (this.userInfo.phoneNumber != undefined && this.userInfo.phoneNumber != '') {
+				this.myInfo.phoneNumber = this.userInfo.phoneNumber
 			}
 			if (this.userInfo.nickName != undefined && this.userInfo.nickName != '') {
 				this.myInfo.nickName = this.userInfo.nickName
 			}
-			this.myInfo.clientNo = this.userInfo.clientNo
 			
 			
 			this.orderCue = getApp().globalData.redDotCue.orderCue

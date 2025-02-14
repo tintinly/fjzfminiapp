@@ -11,6 +11,7 @@
 
 <script>
 	import utils from '../../common/util.js';
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
@@ -27,44 +28,30 @@
 							uni.showLoading({
 								title: '正在注销'
 							});
-							wx.request({
-								url : getApp().globalData.host + '/open/emc/module/bp/wechat/cancel-account',
-								data : {
-									openId : getApp().globalData.openId,
-									phoneNumber : getApp().globalData.phoneNumber
-								},
-								method : 'POST',
-								success : res=>{
-									console.log("cancelAcount", res)
-								
-									uni.clearStorageSync();					
-									utils.isLogin();
-									var UserLogin = getApp().globalData.UserLogin;
-									if(!UserLogin){
-										uni.hideLoading()
-										uni.reLaunch({
-										  url: '../login/login',
-										})
-										uni.showToast({
-											title: '账号已注销',
-											duration: 1000
-										});
-									} else{
-										uni.hideLoading()
-										uni.showToast({
-											title: '注销失败',
-											duration: 1000
-										});
-									}
-								},
-								fail : res=>{
+							HTTP(`/open/emc/module/bp/wechat/cancel-account`,{
+								entrustId : this.entrustId
+							}).then(res=>{
+								uni.clearStorageSync();					
+								utils.isLogin();
+								var UserLogin = getApp().globalData.UserLogin;
+								if(!UserLogin){
+									uni.hideLoading()
+									uni.reLaunch({
+									  url: '../login/login',
+									})
+									uni.showToast({
+										title: '账号已注销',
+										duration: 1000
+									});
+								} else{
 									uni.hideLoading()
 									uni.showToast({
 										title: '注销失败',
 										duration: 1000
 									});
 								}
-							})
+							}).catch(err=>{
+							});
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}

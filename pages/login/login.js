@@ -6,7 +6,7 @@ export default {
 		getPhoneNumber(e) {
 			var that = this;
 			console.log(e);
-			// 企业的小程序号未认证则无法获取用户手机号 因此暂时忽略
+			// var errMsg = e.detail.errMsg;
 			// if (errMsg.indexOf("fail") > -1) {
 			// 	uni.showToast({
 			// 		icon: 'none',
@@ -180,7 +180,7 @@ export default {
 										if(userInfoData.data.openId != undefined){
 											var userInfo = userInfoData.data;
 											wx.setStorageSync('userInfo', userInfo);
-											wx.setStorageSync('phoneNumber', userInfo.lxrPhone);
+											wx.setStorageSync('phoneNumber', userInfo.phoneNumber);
 											wx.setStorageSync('sessionKey', sessionKey);
 											console.log("用户信息",userInfo);
 											utils.isLogin();

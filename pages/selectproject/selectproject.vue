@@ -24,7 +24,8 @@
 </template>
 
 <script>
-	import selectproject from './selectproject.js'
+	import selectproject from './selectproject.js';
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data () {
 			return {
@@ -42,8 +43,17 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function (options) {
-			uni.$on('updateUserInfo',this.updateUserInfo)
-			this.loadData();
+			var _this = this;
+			uni.$on('updateUserInfo',function(e) {
+				_this.clientContactId = e.clientContactId
+				if (_this.clientContactId != undefined && _this.clientContactId != '') {
+					_this.loadData();
+				};
+			});
+			_this.loadData();
+		},
+		onUnload() {
+			uni.$off('updateUserInfo');
 		},
 		// onPullDownRefresh () {
 		// 	    console.log('触发下拉刷新了')
@@ -53,12 +63,6 @@
 				uni.navigateTo({
 					url : url 
 				})
-			},
-			updateUserInfo : function(e) {
-				this.clientContactId = e.clientContactId
-				if (this.clientContactId != undefined && this.clientContactId != '') {
-					this.loadData();
-				}
 			},
 			viewReport : function(e){
 				wx.request({
@@ -108,61 +112,32 @@
 			},
 			
 			loadData : function(e) {
-				wx.showLoading({
-					title : '查询中'
-				})
-				wx.request({
-					url : getApp().globalData.host + '/open/emc/module/bp/wechat/select-contract',
-					data : {
-						clientNo : getApp().globalData.userInfo.clientNo
-					},
-					method : getApp().globalData.method,
-					success : (projectList) => {
-						if(projectList.statusCode != 200){
-							this.projectList = []
-							this.noData = true
-							wx.showToast({
-								title: '网络错误',
-								icon: 'none',
-								duration: 1500
-							});
-						}else if(projectList.data.length == 0){
-							this.projectList = []
-							this.noData = true
-							wx.showToast({
-								title: '未查到相关信息',
-								icon: 'none',
-								duration: 1500
-							});
-						}else{
-							var dataList = projectList.data;
-							console.log('dataList',dataList)
-							var projectList = [];
-							for(var i = 0 ; i < dataList.length ; i++){
-								projectList[projectList.length] = {
-									projId : dataList[i].projId,
-									projName : dataList[i].projName,
-									projNode : dataList[i].projNode,
-									projNo : dataList[i].projNo !== undefined ?  dataList[i].projNo : '无',
-									createdTime : dataList[i].createdTime,
-									fileList : dataList[i].projFile
-								}
+				HTTP(`/open/emc/module/bp/wechat/select-contract`,{
+					clientNo : getApp().globalData.userInfo.clientNo
+				}).then(res=>{
+					var dataList = res.data;
+					if(dataList.length == 0){
+						this.projectList = []
+						this.noData = true
+					}else{
+						var projectList = [];
+						for(var i = 0 ; i < dataList.length ; i++){
+							projectList[projectList.length] = {
+								projId : dataList[i].projId,
+								projName : dataList[i].projName,
+								projNode : dataList[i].projNode,
+								projNo : dataList[i].projNo !== undefined ?  dataList[i].projNo : '无',
+								createdTime : dataList[i].createdTime,
+								fileList : dataList[i].projFile
 							}
-							this.projectList = projectList;
-							this.noData = false
-						    wx.hideLoading()
 						}
-					},
-					fail : (res) =>{
-						console.log(res)
-						uni.hideLoading()
-						uni.showToast({
-							title: '网络错误',
-							icon: 'error',
-							duration: 1500
-						})
+						this.projectList = projectList;
+						this.noData = false
 					}
-				})
+				}).catch(err=>{
+					var projectList = [];
+					this.noData = false
+				});
 			}
 		},
 	}

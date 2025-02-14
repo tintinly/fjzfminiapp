@@ -55,6 +55,7 @@
 
 <script>
 	import utils from '../../common/util.js';
+	import { HTTP } from '../../common/http.js';
 	export default {
 		data() {
 			return {
@@ -74,7 +75,9 @@
 		 */
 		onLoad(options){
 			uni.$on('updateUserInfo',this.updateUserInfo)
-			this.loadData();
+		},
+		onUnLoad(options){
+			uni.$off('updateUserInfo')
 		},
 		methods: {
 			toPage: function (url, needLogin = false) {
@@ -95,9 +98,6 @@
 				console.log(e)
 			   this.wordCount = e.detail.cursor
 			   this.entrustContent = e.detail.value
-			},
-			loadData : function(e)	 {
-				
 			},
 			ChooseImage() {
 				uni.chooseImage({
@@ -131,104 +131,67 @@
 					content: '确定提交该委托单？',
 					success: res => {
 						if (res.confirm) {
-							uni.showLoading({
-								title: '上传中'
-							})
-							uni.request({
-								url: getApp().globalData.host + '/open/emc/module/bp/wechat/submit-entrust',
-								data : {
-									entrustContent : this.entrustContent,
-									openId : getApp().globalData.openId,
-									clientId : getApp().globalData.userInfo.clientId,
-									clientContactId : getApp().globalData.userInfo.clientContactId
-								},
-								method : 'POST',
-								success : (enTrustId) =>{
-									console.log('enTrustId',enTrustId)
-									if (enTrustId.statusCode==500) {
-										uni.hideLoading()
-										uni.showToast({
-											title:'提交时发生错误',
-											duration:1500,
-											icon:'none'
-										})
-									} else if (enTrustId.statusCode==404) {
-										uni.hideLoading()
-										uni.showToast({
-											title:'网络错误',
-											duration:1500,
-											icon:'error'
-										})
-									} else {
-										// 上传照片 至 lims系统附件
-										if (this.imgList.length > 0) {
-											for (var i = 0; i < this.imgList.length; i++) {
-												var fileIndex = i;
-												uni.uploadFile({
-													url: getApp().globalData.host + '/open/emc/module/bp/wechat/upload-file',
-													filePath: this.imgList[i],
-													name:  'file', 
-													formData: {
-														'targetId' : "T_EMC_WX_ENTRUST$" + enTrustId.data,
-														'fileName' : '委托单附照' + fileIndex + 1
-													},
-													success: (uploadFileRes) => {
-															console.log(uploadFileRes)
-																
-															if (uploadFileRes.statusCode === 500) {
-																uni.hideLoading()
-																uni.showToast({
-																	title : '上传图片错误',
-																	icon: 'error',
-																	duration : 1500,
-																})
-												
-															} else{
-																uni.hideLoading()
-																uni.navigateBack()
-																uni.showModal({
-																	title: '提示',
-																	content: '请前往【我的->我的委托】查看委托单',
-																	showCancel : false,
-																});
-																											
-															} 
-													},
-													fail : (uploadFileRes) =>{
+							HTTP(`/open/emc/module/bp/wechat/submit-entrust`,{
+								entrustContent : this.entrustContent,
+								openId : getApp().globalData.openId,
+								clientId : getApp().globalData.userInfo.clientId,
+								clientContactId : getApp().globalData.userInfo.clientContactId
+							}).then(res=>{
+								var enTrustId = res.data;
+								if (this.imgList.length > 0) {
+									for (var i = 0; i < this.imgList.length; i++) {
+										uni.uploadFile({
+											url: getApp().globalData.host + '/open/emc/module/bp/wechat/upload-file',
+											filePath: this.imgList[i],
+											name:  'file', 
+											formData: {
+												'targetId' : "T_EMC_WX_ENTRUST$" + enTrustId,
+												'fileName' : '委托单附照' + i + 1
+											},
+											success: (uploadFileRes) => {
+													console.log(uploadFileRes)
+														
+													if (uploadFileRes.statusCode === 500) {
 														uni.hideLoading()
 														uni.showToast({
 															title : '上传图片错误',
 															icon: 'error',
 															duration : 1500,
 														})
-													}
-												});
+										
+													} else{
+														uni.hideLoading()
+														uni.navigateBack()
+														uni.showModal({
+															title: '提示',
+															content: '请前往【我的->我的委托】查看委托单',
+															showCancel : false,
+														});
+																									
+													} 
+											},
+											fail : (uploadFileRes) =>{
+												uni.hideLoading()
+												uni.showToast({
+													title : '上传图片错误',
+													icon: 'error',
+													duration : 1500,
+												})
 											}
-										} else {
-											uni.hideLoading()
-											uni.navigateBack()
-											uni.showModal({
-												title: '提示',
-												content: '请前往【我的->我的委托】查看委托单',
-												showCancel : false,
-											});
-										}
+										});
 									}
-								
-								
-								},
-								fail : res=>{
+								} else {
 									uni.hideLoading()
-									uni.showToast({
-										title : '提交错误',
-										icon: 'error',
-										duration : '1500',
-									})
+									uni.navigateBack()
+									uni.showModal({
+										title: '提示',
+										content: '请前往【我的->我的委托】查看委托单',
+										showCancel : false,
+									});
 								}
-							})
+							}).catch(err=>{
+							});
 						}
-						
-		
 					}
 				})
 			},
